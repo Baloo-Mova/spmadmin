@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests;
-use Illuminate\Http\Request;
+use App\SMTP;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use narutimateum\Toastr\Facades\Toastr;
 
 class HomeController extends Controller
 {
@@ -24,33 +26,71 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $data['tasks'] = [
-            [
-                'name' => 'Design New Dashboard',
-                'progress' => '87',
-                'color' => 'danger'
-            ],
-            [
-                'name' => 'Create Home Page',
-                'progress' => '76',
-                'color' => 'warning'
-            ],
-            [
-                'name' => 'Some Other Task',
-                'progress' => '32',
-                'color' => 'success'
-            ],
-            [
-                'name' => 'Start Building Website',
-                'progress' => '56',
-                'color' => 'info'
-            ],
-            [
-                'name' => 'Develop an Awesome Algorithm',
-                'progress' => '10',
-                'color' => 'success'
-            ]
+        $data = [
+            'themeInfo'   => Storage::has(config('config.theme')) ? "Файл " . config('config.theme') . " загружен" : "Файл " . config('config.theme') . " отсутствует",
+            'messageInfo' => Storage::has(config('config.message')) ? "Файл " . config('config.message') . " загружен" : "Файл " . config('config.message') . " отсутствует",
+            'smtpCount'   => SMTP::count(),
+            'mailsFileCount' => count(Storage::files(config('config.emails.mails'))),
+            'ckek_mailFileCount' => count(Storage::files(config('config.emails.ckek_mail'))),
+            'go_mailsFileCount' => count(Storage::files(config('config.emails.go_mails'))),
         ];
-        return view('home.index')->with($data);
+
+        return view('home.index', compact('data'));
     }
+
+    public function delete($name)
+    {
+        switch ($name) {
+            case 'themefile' :
+                Storage::delete(config('config.theme'));
+                break;
+            case 'messagefile' :
+                Storage::delete(config('config.message'));
+                break;
+            case 'smtpclear' :
+                DB::table('smtp')->truncate();
+                break;
+        }
+
+        return redirect(url('/'));
+    }
+
+    public function uploadSmtp()
+    {
+        if (empty(config('config.smtpFolder'))) {
+            Toastr::error("Ключь smtpFolder отсутствует в config.php", "", $options = []);
+
+            return redirect(url('/'));
+        }
+
+        if ( ! Storage::has(config('config.smtpFolder'))) {
+            Toastr::error("Отсутствует папка " . config('config.smtpFolder'), "", $options = []);
+            if (Storage::makeDirectory(config('config.smtpFolder'))) {
+                Toastr::success("Папка " . config('config.smtpFolder') . " создана");
+            }
+
+            return redirect(url('/'));
+        }
+
+        $array = [];
+        DB::table('smtp')->truncate();
+
+        foreach (Storage::files(config('config.smtpFolder')) as $file) {
+            foreach (explode("\n", Storage::get($file)) as $line) {
+                $array[] = ['domen' => $line];
+
+                if (count($array) > 100) {
+                    SMTP::insert($array);
+                    $array = [];
+                }
+            }
+        }
+
+        return redirect(url('/'));
+    }
+
+    public function test(){
+        return view('home.test');
+    }
+
 }

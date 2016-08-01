@@ -18,3 +18,6 @@ Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@logout');
 
 Route::get('/cmd', 'CommandController@index');
+Route::get('/test', 'HomeController@test');
+Route::get('/delete/{name}', 'HomeController@delete');
+Route::get('/smtp-upload', 'HomeController@uploadSmtp');

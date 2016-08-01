@@ -19,10 +19,8 @@
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
       <!-- Optionally, you can add icons to the links -->
-      <li class="{{ Request::is('/home') ? 'active' : ''}} "> <a href="#"><i class="fa fa-files-o"></i><span> Загрузить письма</span></a></li>
         <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="#"><span><i class="fa fa-envelope-o"></i> Загрузить Email</span></a></li>
-        <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="#"><span><i class="fa fa-themeisle"></i> Загрузить темы</span></a></li>
-        <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="#"><span><i class="fa fa-server"></i> Загрузить SMTP</span></a></li>
+        <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="{{ url('/smtp-upload') }}"><span><i class="fa fa-server"></i> Загрузить SMTP</span></a></li>
         <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="#"><span><i class="fa fa-flash"></i> Email для получения SMTP</span></a></li>
         <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="#"><span><i class="fa fa-cogs"></i> Настройки Email</span></a></li>
         <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="#"><span><i class="fa fa-cogs"></i> Настройки SMTP</span></a></li>
