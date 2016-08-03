@@ -6,6 +6,7 @@ use App\User;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 
@@ -77,5 +78,27 @@ class AuthController extends Controller
         }
 
         return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
+    }
+    public function loginUsername()
+    {
+        return property_exists($this, 'name') ? $this->name : 'email';
+    }
+    protected function getCredentials(Request $request)
+    {
+        return $request->only('name', 'password');
+    }
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        return redirect()->back()
+            ->withInput($request->only('name', 'remember'))
+            ->withErrors([
+                'name'=> $this->getFailedLoginMessage(),
+            ]);
+    }
+    protected function validateLogin(Request $request)
+    {
+        $this->validate($request, [
+            'name' => 'required', 'password' => 'required',
+        ]);
     }
 }
