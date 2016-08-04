@@ -11,8 +11,8 @@ return [
     'theme'      => 'theme.txt',
     'smtpFolder' => 'smtp',
     'emails'     => [
-        'ckek_mail' => 'ckek_mail',
         'go_mails'  => 'go_mails',
         'mails'     => 'mails'
-    ]
+    ],
+    'attach'=>'attach',
 ];

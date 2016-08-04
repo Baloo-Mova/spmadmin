@@ -28,7 +28,7 @@
         </div>
         <div class="col-xs-12 col-sm-5 col-lg-5 text-center">
             <div class="monkey">
-                <img src="img/monkey.gif" alt="Monkey">
+                <img src="{{ url('img/monkey.gif') }}" alt="Monkey">
             </div>
         </div>
     </div>

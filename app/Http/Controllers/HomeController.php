@@ -31,11 +31,15 @@ class HomeController extends Controller
             'messageInfo' => Storage::has(config('config.message')) ? "Файл " . config('config.message') . " загружен" : "Файл " . config('config.message') . " отсутствует",
             'smtpCount'   => SMTP::count(),
             'mailsFileCount' => count(Storage::files(config('config.emails.mails'))),
-            'ckek_mailFileCount' => count(Storage::files(config('config.emails.ckek_mail'))),
+            'attachFileCount' => count(Storage::files(config('config.attach'))),
             'go_mailsFileCount' => count(Storage::files(config('config.emails.go_mails'))),
         ];
 
-        return view('home.index', compact('data'));
+        $status = "STOP";
+
+        $bots = [];
+
+        return view('home.index', compact('data','status','bots'));
     }
 
     public function delete($name)
@@ -49,6 +53,14 @@ class HomeController extends Controller
                 break;
             case 'smtpclear' :
                 DB::table('smtp')->truncate();
+                break;
+            case 'mailfilesclear':
+                Storage::deleteDirectory(config('config.emails.mails'));
+                Storage::makeDirectory(config('config.emails.mails'));
+                break;
+            case 'attachfilesclear':
+                Storage::deleteDirectory(config('config.attach'));
+                Storage::makeDirectory(config('config.attach'));
                 break;
         }
 
