@@ -21,3 +21,8 @@ Route::get('/cmd', 'CommandController@index');
 Route::get('/test', 'HomeController@test');
 Route::get('/delete/{name}', 'HomeController@delete');
 Route::get('/smtp-upload', 'HomeController@uploadSmtp');
+
+Route::get('/email-settings', 'SettingsController@emailSettings');
+Route::get('/smtp-settings', 'SettingsController@smtpSettings');
+Route::post('/email-settings', 'SettingsController@emailSettingsStore');
+Route::post('/smtp-settings', 'SettingsController@smtpSettingsStore');
