@@ -19,12 +19,10 @@
     <!-- Sidebar Menu -->
     <ul class="sidebar-menu">
       <!-- Optionally, you can add icons to the links -->
-        <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="#"><span><i class="fa fa-envelope-o"></i> Загрузить Email</span></a></li>
         <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="{{ url('/smtp-upload') }}"><span><i class="fa fa-server"></i> Загрузить SMTP</span></a></li>
-        <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="#"><span><i class="fa fa-flash"></i> Email для получения SMTP</span></a></li>
+        <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="#"><span><i class="fa fa-envelope-o"></i> Email для получения SMTP</span></a></li>
         <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="#"><span><i class="fa fa-cogs"></i> Настройки Email</span></a></li>
-        <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="#"><span><i class="fa fa-cogs"></i> Настройки SMTP</span></a></li>
-        <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="#"><span><i class="fa fa-cogs"></i> Настройки валидации Email</span></a></li>
+        <li class="{{ Request::is('smtp-settings') ? 'active' : ''}} "><a href="{{ url('/smtp-settings') }}"><span><i class="fa fa-cogs"></i> Настройки проверок SMTP</span></a></li>
     </ul><!-- /.sidebar-menu -->
   </section>
   <!-- /.sidebar -->
