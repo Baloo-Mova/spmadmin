@@ -69,7 +69,7 @@
                     <!-- /.box-body -->
                     <div class="box-footer">
                         <a href="{{ url('/') }}" class="btn btn-default">Cancel</a>
-                        <button type="submit" class="btn btn-default pull-right">Save</button>
+                        <button type="submit" class="btn btn-primary pull-right">Save</button>
                     </div>
                     <!-- /.box-footer -->
                 </form>
