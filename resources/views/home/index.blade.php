@@ -54,27 +54,27 @@
                     <div class="row">
                         <div class="col-md-6">Статистика и отображение данных ботов:</div>
                         <div class="col-md-1" data-toggle="tooltip" data-placement="top" data-html="true" data-animated="fade" title="<img src='{{ rand(0,1) == 1? url('img/1.jpg') : url('img/hi.png') }}' />">Online
-                            <span class="badge">123123</span></div>
-                        <div class="col-md-1">Offline <span class="badge">123123</span></div>
-                        <div class="col-md-1">Spam <span class="badge">123123</span></div>
-                        <div class="col-md-1">Wait <span class="badge">123123</span></div>
+                            <span class="badge">{{ $botsInfo['online'] }}</span></div>
+                        <div class="col-md-1">Offline <span class="badge">{{ $botsInfo['off'] }}</span></div>
+                        <div class="col-md-1">Spam <span class="badge">{{ $botsInfo['spam'] }}</span></div>
+                        <div class="col-md-1">Wait <span class="badge"> {{ $botsInfo['wait'] }} </span></div>
                         <div class="col-md-1" style="color:green" data-toggle="tooltip" data-placement="top" title="Clear online bots">Online
-                            <span class="badge">123123</span></div>
+                            <span class="badge">{{  $botsInfo['clear_online'] }}</span></div>
                         <div class="col-md-1" style="color:red" data-toggle="tooltip" data-placement="top" title="Online bots in black list">Online
-                            <span class="badge">123123</span></div>
+                            <span class="badge">{{ $botsInfo['black_online'] }}</span></div>
                     </div>
                     <hr/>
                     <div class="row">
                         <div class="col-md-6">SMTP
                             <a href="{{ url('/download/goodSmtp') }}" class="btn btn-success btn-sm" style="margin-left: 20px;"> Download good </a>
                             <a href="{{ url('/download/badSmtp') }}" class="btn btn-danger btn-sm" style="margin-left: 20px;"> Download bad </a>
-                            <a href="{{ url('/clear/checkSmtp') }}" class="btn btn-info btn-sm" style="margin-left: 20px;"> Clear check smtp </a>
+                            <a href="{{ url('/delete/clearSmtpTable') }}" class="btn btn-info btn-sm" style="margin-left: 20px;"> Clear check smtp </a>
                         </div>
-                        <div class="col-md-1">All <span class="badge">123123</span></div>
-                        <div class="col-md-1">Wait <span class="badge">123123</span></div>
-                        <div class="col-md-2 ">Checking <span class="badge">123123</span></div>
-                        <div class="col-md-1">Good <span class="badge">123123</span></div>
-                        <div class="col-md-1">Bad <span class="badge">123123</span></div>
+                        <div class="col-md-1">All <span class="badge">{{ $smtpInfo['all'] }}</span></div>
+                        <div class="col-md-1">Wait <span class="badge">{{ $smtpInfo['needCheck'] }}</span></div>
+                        <div class="col-md-2 ">Checking <span class="badge">{{ $smtpInfo['inCheck'] }}</span></div>
+                        <div class="col-md-1">Good <span class="badge">{{ $smtpInfo['good'] }}</span></div>
+                        <div class="col-md-1">Bad <span class="badge">{{ $smtpInfo['bad'] }}</span></div>
                     </div>
                     <hr/>
                     <div class="row">
@@ -94,17 +94,17 @@
     </div><!-- /.row -->
     <div class="text-center">
         <div class="btn-group">
-            <a href="{{ url('/status/start') }}" class="btn {{ $status == "START"? "btn-success" : "btn-default" }}">{{ $status != "START"? "START" : "WORKING" }}</a>
-            <a href="{{ url('/status/stop') }}" class="btn {{ $status == "STOP"? "btn-success" : "btn-default" }}">{{ $status != "STOP" ? "STOP" : "STOPPED" }}</a>
-            <a href="{{ url('/status/banall') }}" class="btn {{ $status == "BANALL"? "btn-success" : "btn-default" }}">{{ $status != "BANALL"? "BAN ALL" : "BAN ALL" }}</a>
-            <a href="{{ url('/status/smtpcheck') }}" class="btn {{ $status == "SMTPCHECK"? "btn-success" : "btn-default" }}">{{ $status != "SMTPCHECK"? "START SMTP CHECK" : "SMTP CHECK WORKING" }}</a>
-            <a href="{{ url('/status/smtpfind') }}" class="btn {{ $status == "SMTPFIND"? "btn-success" : "btn-default" }}">{{ $status != "SMTPFIND"? "START SMTP FIND" : "SMTP FIND WORKING" }}</a>
+            <a href="{{ url('/status/START') }}" class="btn {{ $status == "START"? "btn-success" : "btn-default" }}">{{ $status != "START"? "START" : "WORKING" }}</a>
+            <a href="{{ url('/status/STOP') }}" class="btn {{ $status == "STOP"? "btn-success" : "btn-default" }}">{{ $status != "STOP" ? "STOP" : "STOPPED" }}</a>
+            <a href="{{ url('/status/BANALL') }}" class="btn {{ $status == "BANALL"? "btn-success" : "btn-default" }}">{{ $status != "BANALL"? "BAN ALL" : "BAN ALL" }}</a>
+            <a href="{{ url('/status/SMTPCHECK') }}" class="btn {{ $status == "SMTPCHECK"? "btn-success" : "btn-default" }}">{{ $status != "SMTPCHECK"? "START SMTP CHECK" : "SMTP CHECK WORKING" }}</a>
+            <a href="{{ url('/status/SMTPFIND') }}" class="btn {{ $status == "SMTPFIND"? "btn-success" : "btn-default" }}">{{ $status != "SMTPFIND"? "START SMTP FIND" : "SMTP FIND WORKING" }}</a>
         </div>
     </div>
     <div class="text-center">
         <div class="btn-group">
-            <a href="{{ url('/status/needCheckBlack') }}" class="btn {{ $status == "START"? "btn-success" : "btn-default" }}">{{ $status != "START"? "START" : "WORKING" }}</a>
-            <a href="{{ url('/status/noNeedCheckBlack') }}" class="btn {{ $status == "STOP"? "btn-success" : "btn-default" }}">{{ $status != "STOP" ? "STOP" : "STOPPED" }}</a>
+            <a href="{{ url('/blackList/needCheckBlack') }}" class="btn {{ $checkBlackList == "needCheckBlack"? "btn-success" : "btn-default" }}">{{ $checkBlackList != "needCheckBlack"? "Чекать в блек листах" : "Чекает в блек листах" }}</a>
+            <a href="{{ url('/blackList/noNeedCheckBlack') }}" class="btn {{ $checkBlackList == "noNeedCheckBlack"? "btn-success" : "btn-default" }}">{{ $checkBlackList != "noNeedCheckBlack" ? "Не чекать в блек листах" : "Не чекает в блек листах" }}</a>
         </div>
     </div>
     <div style="margin-top: 10px;"></div>
@@ -112,7 +112,7 @@
         <div class="col-md-12">
             <div class="box box-primary">
                 <div class="box-header with-border text-center">
-                    <div class="col-md-3"> Номер</div>
+                    <div class="col-md-3"> Id</div>
                     <div class="col-md-3"> IP-адресс</div>
                     <div class="col-md-3"> Статус</div>
                     <div class="col-md-3"> Дата|Время</div>
@@ -123,14 +123,17 @@
                 </div>
                 <div class="box-body">
                     @forelse($bots as $bot)
-                        <div class="col-md-3"> Номер</div>
-                        <div class="col-md-3"> IP-адресс</div>
-                        <div class="col-md-3"> Статус</div>
-                        <div class="col-md-3"> Дата|Время</div>
+                        <div class="col-md-3"> {{ $bot->id }}</div>
+                        <div class="col-md-3"> {{ $bot->ip }}</div>
+                        <div class="col-md-3"> {{ $bot->status }}</div>
+                        <div class="col-md-3"> {{ $bot->updated_at }}</div>
                         @empty
                         <div class="col-md-12 text-center"> There are no bots yet!</div>
                     @endforelse
 
+                </div>
+                <div class="box-footer text-center">
+                    {{ $bots->render() }}
                 </div>
             </div>
         </div>

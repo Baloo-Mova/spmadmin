@@ -14,7 +14,7 @@ class MessageTable extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->increments('id');
-            $table->text('message');
+            $table->text('message')->nullable();
         });
     }
 

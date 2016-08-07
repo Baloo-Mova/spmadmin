@@ -18,11 +18,25 @@ Route::post('/login', 'Auth\AuthController@postLogin');
 Route::get('/logout', 'Auth\AuthController@logout');
 
 Route::get('/cmd', 'CommandController@index');
-Route::get('/test', 'HomeController@test');
+Route::post('/cmd', 'CommandController@postIndex');
+
+Route::get('/test', 'CommandController@test');
 Route::get('/delete/{name}', 'HomeController@delete');
 Route::get('/smtp-upload', 'HomeController@uploadSmtp');
 
-Route::get('/email-settings', 'SettingsController@emailSettings');
-Route::get('/smtp-settings', 'SettingsController@smtpSettings');
-Route::post('/email-settings', 'SettingsController@emailSettingsStore');
-Route::post('/smtp-settings', 'SettingsController@smtpSettingsStore');
+Route::get('/settings/email', 'SettingsController@emailSettings');
+Route::get('/settings/smtp', 'SettingsController@smtpSettings');
+Route::post('/settings/email', 'SettingsController@emailSettingsStore');
+Route::post('/settings/smtp', 'SettingsController@smtpSettingsStore');
+
+Route::post('/settings/mail-text-file', 'SettingsController@storeMailTextFile');
+Route::post('/settings/smtp-list', 'SettingsController@storeSmtpList');
+Route::post('/settings/mail-list', 'SettingsController@storeMailList');
+
+Route::get('/status/{statusName}', 'StatusController@changeStatus');
+Route::get('/blackList/{status}' , 'StatusController@changeBlack');
+
+Route::get('/download/goodSmtp', 'DownloadController@goodSmtp');
+Route::get('/download/badSmtp', 'DownloadController@badSmtp');
+
+

@@ -15,4 +15,7 @@ return [
         'mails'     => 'mails'
     ],
     'attach'=>'attach',
+    'mailTextFile' =>'mailTextFile',
+    'bot_paginate' => 5,
+
 ];

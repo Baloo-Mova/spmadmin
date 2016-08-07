@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Bots;
+use App\PannelSettings;
 use App\SMTP;
+use App\SmtpListForCheck;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use narutimateum\Toastr\Facades\Toastr;
@@ -35,11 +38,36 @@ class HomeController extends Controller
             'go_mailsFileCount' => count(Storage::files(config('config.emails.go_mails'))),
         ];
 
-        $status = "STOP";
+        $settings = PannelSettings::whereId(1)->first();
 
-        $bots = [];
+        $status = $settings->status;
+        $checkBlackList = $settings->checkBlackList;
 
-        return view('home.index', compact('data','status','bots'));
+        $bots = Bots::paginate(config('config.bot_paginate'));
+        $botsInfo = [];
+        $botsInfo['online'] = Bots::where(['life'=>1])->count();
+        $botsInfo['off'] = Bots::where(['otk'=>1])->count();
+        $botsInfo['spam'] = Bots::where(['bot_status'=>1, 'life'=>1])->count();
+        $botsInfo['wait'] = Bots::where(['bot_status'=>2, 'life'=>1])->count();
+        $botsInfo['clear_online'] = Bots::where(['life'=>1,'black'=>0])->count();
+        $botsInfo['black_online'] = Bots::where(['life'=>1,'black'=>1])->count();
+
+        $smtpInfo = [];
+        $smtpInfo['all'] = SmtpListForCheck::all()->count();
+        $smtpInfo['needCheck'] = SmtpListForCheck::where(['isget'=>0])->count();
+        $smtpInfo['inCheck'] = SmtpListForCheck::where('time', '<>', '')->count();
+        $smtpInfo['good'] = SmtpListForCheck::where(['status'=>'SENT'])->count();
+        $smtpInfo['bad'] = SmtpListForCheck::where(['status'=>'BAD'])->count();
+
+//        $pool = [];
+//        $pool[] = SmtpListForCheck::all()->count();
+//        $pool[] = SmtpListForCheck::where(['isget'=>0])->count();
+//        $pool[] = SmtpListForCheck::where('time', '<>', '')->count();
+//        $pool[] = SmtpListForCheck::where(['status'=>'SENT'])->count();
+//        $pool[] = SmtpListForCheck::where(['status'=>'BAD'])->count();
+
+
+        return view('home.index', compact('data','status','bots','checkBlackList','botsInfo', 'smtpInfo'));
     }
 
     public function delete($name)
@@ -61,6 +89,9 @@ class HomeController extends Controller
             case 'attachfilesclear':
                 Storage::deleteDirectory(config('config.attach'));
                 Storage::makeDirectory(config('config.attach'));
+                break;
+            case 'clearSmtpTable':
+                DB::table('smtplistforcheck')->truncate();
                 break;
         }
 
