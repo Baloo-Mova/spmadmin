@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateSmtplistforcheckTable extends Migration {
+class CreateSmtpfindTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,15 +12,17 @@ class CreateSmtplistforcheckTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('smtplistforcheck', function(Blueprint $table)
+		Schema::create('smtpfind', function(Blueprint $table)
 		{
 			$table->integer('id', true);
+			$table->string('email')->nullable();
 			$table->string('smtp')->nullable();
-			$table->integer('botid')->nullable();
+			$table->string('port')->nullable();
+			$table->string('pass')->nullable();
 			$table->integer('isget')->nullable()->default(0);
-			$table->string('time')->nullable();
-			$table->string('status')->nullable();
-			$table->string('errmsg')->nullable();
+			$table->string('time')->nullable()->default('');
+			$table->integer('botid')->nullable();
+			$table->string('emailpas');
 		});
 	}
 
@@ -32,7 +34,7 @@ class CreateSmtplistforcheckTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('smtplistforcheck');
+		Schema::drop('smtpfind');
 	}
 
 }

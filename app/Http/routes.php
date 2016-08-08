@@ -19,10 +19,15 @@ Route::get('/logout', 'Auth\AuthController@logout');
 
 Route::get('/cmd', 'CommandController@index');
 Route::post('/cmd', 'CommandController@postIndex');
+Route::post('/sendcheckers', 'CommandController@sendcheckers');
+Route::post('/smtpcheckres', 'CommandController@smtpcheckres');
+
 
 Route::get('/test', 'CommandController@test');
 Route::get('/delete/{name}', 'HomeController@delete');
 Route::get('/smtp-upload', 'HomeController@uploadSmtp');
+Route::get('/themes', 'HomeController@themes');
+Route::get('/messages', 'HomeController@messages');
 
 Route::get('/settings/email', 'SettingsController@emailSettings');
 Route::get('/settings/smtp', 'SettingsController@smtpSettings');
@@ -38,5 +43,12 @@ Route::get('/blackList/{status}' , 'StatusController@changeBlack');
 
 Route::get('/download/goodSmtp', 'DownloadController@goodSmtp');
 Route::get('/download/badSmtp', 'DownloadController@badSmtp');
+Route::get('/download/go-mails/{filename}', 'DownloadController@goMails');
+Route::get('/download/fromname/{filename}', 'DownloadController@fromname');
+Route::get('/download/attach/{filename}', 'DownloadController@attach');
+Route::get('/download/smtp_check_attach/{filename}', 'DownloadController@checkAttach');
+Route::get('/download/mailTextFile/{filename}', 'DownloadController@mailTextFile');
+
+Route::get('/update-smtp-pull', 'PullController@smtp');
 
 

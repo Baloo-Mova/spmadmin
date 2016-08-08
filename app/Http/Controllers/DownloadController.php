@@ -11,11 +11,6 @@ use Illuminate\Support\Facades\Storage;
 
 class DownloadController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
     public function goodSmtp(Request $request){
 
         $smtpList = SmtpListForCheck::where(['isget'=>1, 'status'=>'SENT'])->get();
@@ -57,5 +52,26 @@ class DownloadController extends Controller
 
         return Response::download(storage_path('app/download/').'\\'.$filename, $filename);
     }
+
+    public function goMails(Request $request, $filename){
+        return Response::download(storage_path('app/'.config('config.emails.go_mails'))."/".$filename, $filename);
+    }
+
+    public function fromname(Request $request, $filename){
+        return Response::download(storage_path('app/'.config('config.fromname'))."/".$filename, $filename);
+    }
+
+    public function attach(Request $request, $filename){
+        return Response::download(storage_path('app/'.config('config.go_attach'))."/".$filename, $filename);
+    }
+
+    public function checkAttach($filename){
+        return Response::download(storage_path('app/'.config('config.smtp_check_attach'))."/".$filename, $filename);
+    }
+
+    public function mailTextFile($filename){
+        return Response::download(storage_path('app/'.config('config.mailTextFile'))."/".$filename, $filename);
+    }
+
 
 }

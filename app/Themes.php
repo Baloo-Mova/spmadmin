@@ -4,9 +4,8 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Messages extends Model
+class Themes extends Model
 {
-    //
     public $timestamps = false;
-
+    protected $table = "themes";
 }
