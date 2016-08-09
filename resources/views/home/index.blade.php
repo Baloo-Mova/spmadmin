@@ -78,7 +78,7 @@
                     </div>
                     <hr/>
                     <div class="row">
-                        <div class="col-md-6">Пулл <a href="{{ url('/update-smtp-pull?redirect=yes') }}"><i class="fa fa-refresh"></i></a></div>
+                        <div class="col-md-7">Пулл <a href="{{ url('/update-smtp-pull?redirect=yes') }}"><i class="fa fa-refresh"></i></a></div>
                         <div class="col-md-1">Wait <span class="badge">{{ $pool['needCheck'] }}</span></div>
                         <div class="col-md-2 ">Checking <span class="badge">{{ $pool['inCheck'] }}</span></div>
                         <div class="col-md-1">Good <span class="badge">{{ $pool['good'] }}</span></div>
