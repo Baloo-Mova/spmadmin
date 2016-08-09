@@ -16,9 +16,13 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(AdminUser::class);
 
+        if(SettingsForCheckSMTP::find(1) == null)
         SettingsForCheckSMTP::create(['id'=>1]);
+        if(MailSettings::find(1) == null)
         MailSettings::create(['id'=>1]);
+        if(PannelSettings::find(1) == null)
         PannelSettings::create(['id'=>1]);
+
     }
 }
 

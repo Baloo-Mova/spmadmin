@@ -85,26 +85,6 @@
                         <div class="col-md-1">Bad <span class="badge">{{ $pool['bad'] }}</span></div>
                     </div>
                     <hr/>
-                    <div class="row">
-                        <div class="col-md-6">SMTP
-                            <a href="{{ url('/download/goodSmtp') }}" class="btn btn-success btn-sm" style="margin-left: 20px;"> Download good </a>
-                            <a href="{{ url('/download/badSmtp') }}" class="btn btn-danger btn-sm" style="margin-left: 20px;"> Download bad </a>
-                            <a href="{{ url('/delete/clearSmtpTable') }}" class="btn btn-info btn-sm" style="margin-left: 20px;"> Clear check smtp </a>
-                        </div>
-                        <div class="col-md-1">All <span class="badge">{{ $emailInfo['all'] }}</span></div>
-                        <div class="col-md-1">Wait <span class="badge">{{ $emailInfo['needCheck'] }}</span></div>
-                        <div class="col-md-2 ">Checking <span class="badge">{{ $emailInfo['inCheck'] }}</span></div>
-                        <div class="col-md-1">Good <span class="badge">{{ $emailInfo['good'] }}</span></div>
-                        <div class="col-md-1">Bad <span class="badge">{{ $emailInfo['bad'] }}</span></div>
-                    </div>
-                    <hr/>
-                    <div class="row">
-                        <div class="col-md-6">Пулл <a href="{{ url('/update-smtp-pull?redirect=yes') }}"><i class="fa fa-refresh"></i></a></div>
-                        <div class="col-md-1">Wait <span class="badge">{{ $Epool['needCheck'] }}</span></div>
-                        <div class="col-md-2 ">Checking <span class="badge">{{ $Epool['inCheck'] }}</span></div>
-                        <div class="col-md-1">Good <span class="badge">{{ $Epool['good'] }}</span></div>
-                        <div class="col-md-1">Bad <span class="badge">{{ $Epool['bad'] }}</span></div>
-                    </div>
                     <div style="margin-bottom: 10px;"></div>
                 </div><!-- /.box-body -->
                 {{--<div class="box-footer">--}}

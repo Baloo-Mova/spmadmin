@@ -11,6 +11,8 @@ class AdminUser extends Seeder
      */
     public function run()
     {
+        if(User::find(1) == null)
+
         User::create([
             'name'     => 'admin',
             'password' => bcrypt('admin')
