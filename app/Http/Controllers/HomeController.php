@@ -73,9 +73,18 @@ class HomeController extends Controller
         $emailInfo              = [];
         $emailInfo['all']       = smtpfind::count();
         $emailInfo['needCheck'] = smtpfind::where(['isget' => 0])->count();
+        $emailInfo['checked'] = smtpfind::where([
+            ['status', '<>', 'NULL'],
+            ['status', '<>', '']
+        ])->count();
 
         $Epool              = [];
         $Epool['needCheck'] = smtpfindpiece::where(['isget' => 0])->count();
+        $Epool['inCheck'] = smtpfindpiece::where(['isget'=>1])->count();
+        $Epool['checked'] = smtpfindpiece::where([
+            ['status', '<>', 'NULL'],
+            ['status', '<>', '']
+        ])->count();
 
         $data['themeCount']   = Themes::count();
         $data['messageCount'] = Messages::count();
@@ -106,6 +115,9 @@ class HomeController extends Controller
                 break;
             case 'clearSmtpTable':
                 DB::table('smtplistforcheck')->truncate();
+                break;
+            case 'clearEmailTable':
+                DB::table('smtpfind')->truncate();
                 break;
         }
 
@@ -165,7 +177,7 @@ class HomeController extends Controller
             return redirect(url('/'));
         }
 
-        Toastr::error("Что то пошло не так, возможно нету файла в storage/app");
+        Toastr::error("Что то пошло не так, возможно нету файла ".config('config.theme')." в storage/app");
 
         return redirect(url('/'));
     }
@@ -188,14 +200,32 @@ class HomeController extends Controller
 
             return redirect(url('/'));
         }
-        Toastr::error("Что то пошло не так, возможно нету файла в storage/app");
+        Toastr::error("Что то пошло не так, возможно нету файла ".config('config.message')." в storage/app");
 
         return redirect(url('/'));
     }
 
-    public function test()
-    {
-        return view('home.test');
+    public function uploadEmailsForSmtpFind(){
+        if (Storage::has(config('config.smtpfind'))) {
+            $emails = explode("\n", Storage::get(config('config.smtpfind')));
+            $now    = 1;
+            DB::table('smtpfind')->delete();
+
+            foreach ($emails as $email) {
+                $array[] = ['emailpas' => trim($email)];
+                if (count($array) > 100 || $now++ == count($emails)) {
+                    smtpfind::insert($array);
+                    $array = [];
+                }
+            }
+            Toastr::success("Email загружены в количестве: ".count($emails));
+
+            return redirect(url('/'));
+        }
+
+        Toastr::error("Что то пошло не так, возможно нету файла ".config('config.smtpfind')." в storage/app");
+
+        return redirect(url('/'));
     }
 
 }

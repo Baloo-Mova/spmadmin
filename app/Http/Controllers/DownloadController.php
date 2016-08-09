@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\smtpfind;
 use App\SmtpListForCheck;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Response;
@@ -43,6 +44,45 @@ class DownloadController extends Controller
 
         foreach ($smtpList as $smtp){
             $arr[] = $smtp->smtp." ошибка: ".$smtp->errmsg;
+            $countNow++;
+            if(count($arr)>100 || $countNow == $max){
+                Storage::disk('local')->put('download/'.$filename, implode("\n",$arr));
+                $arr = [];
+            }
+        }
+
+        return Response::download(storage_path('app/download/').'\\'.$filename, $filename);
+    }
+
+    public function goodEmail(Request $request){
+        $smtpList = smtpfind::where('status','not like', 'none%')->get();
+
+        $filename = "download_good_email_".time('U').".txt";
+        $arr=[];
+        $max = count($smtpList);
+        $countNow = 0;
+
+        foreach ($smtpList as $smtp){
+            $arr[] = $smtp->status;
+            $countNow++;
+            if(count($arr)>100 || $countNow == $max){
+                Storage::disk('local')->put('download/'.$filename, implode("\n",$arr));
+                $arr = [];
+            }
+        }
+
+        return Response::download(storage_path('app/download/').'\\'.$filename, $filename);
+    }
+
+    public function badEmail(Request $request){
+        $smtpList = smtpfind::where('status','like', 'none%')->get();
+        $filename = "download_bad_email_".time('U').".txt";
+        $arr=[];
+        $max = count($smtpList);
+        $countNow = 0;
+
+        foreach ($smtpList as $smtp){
+            $arr[] = $smtp->status;
             $countNow++;
             if(count($arr)>100 || $countNow == $max){
                 Storage::disk('local')->put('download/'.$filename, implode("\n",$arr));

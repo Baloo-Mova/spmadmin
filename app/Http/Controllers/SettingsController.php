@@ -72,13 +72,16 @@ class SettingsController extends Controller
         $file  = $request->file('file');
         $count = 0;
         DB::table('smtplistforcheck')->truncate();
-        foreach (explode("\n",File::get($file)) as $item) {
-            $array[] = ['smtp' => $item];
-            if (count($array) > 100) {
+        $items =explode("\n",File::get($file));
+
+        foreach ($items as $item) {
+            $array[] = ['smtp' => trim($item)];
+            $count++;
+            if (count($array) > 100 || $count == count($items) ) {
                 SmtpListForCheck::insert($array);
                 $array = [];
             }
-            $count++;
+
         }
         Toastr::success("Загружено SMTP:  ".$count);
 

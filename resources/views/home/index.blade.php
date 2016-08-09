@@ -85,6 +85,24 @@
                         <div class="col-md-1">Bad <span class="badge">{{ $pool['bad'] }}</span></div>
                     </div>
                     <hr/>
+                    <div class="row">
+                        <div class="col-md-6">Emails for find smtp
+                            <a href="{{ url('/download/goodEmail') }}" class="btn btn-success btn-sm" style="margin-left: 20px;"> Download good </a>
+                            <a href="{{ url('/download/badEmail') }}" class="btn btn-danger btn-sm" style="margin-left: 20px;"> Download bad </a>
+                            <a href="{{ url('/delete/clearEmailTable') }}" class="btn btn-info btn-sm" style="margin-left: 20px;"> Clear </a>
+                        </div>
+                        <div class="col-md-1">All <span class="badge">{{ $emailInfo['all'] }}</span></div>
+                        <div class="col-md-3">Wait <span class="badge">{{ $emailInfo['needCheck'] }}</span></div>
+                        <div class="col-md-1">Checked <span class="badge">{{ $emailInfo['checked'] }}</span></div>
+                    </div>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-md-7">Пулл <a href="{{ url('/update-email-pull?redirect=yes') }}"><i class="fa fa-refresh"></i></a></div>
+                        <div class="col-md-1">Wait <span class="badge">{{ $Epool['needCheck'] }}</span></div>
+                        <div class="col-md-2 ">Checking <span class="badge">{{ $Epool['inCheck'] }}</span></div>
+                        <div class="col-md-1 ">Checked <span class="badge">{{ $Epool['checked'] }}</span></div>
+                    </div>
+
                     <div style="margin-bottom: 10px;"></div>
                 </div><!-- /.box-body -->
                 {{--<div class="box-footer">--}}

