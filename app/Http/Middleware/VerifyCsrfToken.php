@@ -13,7 +13,7 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         'cmd',
-        'sendcheckers',
+        'sendcheckres',
         'smtpcheckres'
     ];
 }

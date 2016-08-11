@@ -93,13 +93,14 @@ class SettingsController extends Controller
         $file  = $request->file('file');
         $count = 0;
         DB::table('controlmaillist')->truncate();
-        foreach (explode("\n",File::get($file)) as $item) {
+        $files = explode("\n",File::get($file));
+        foreach ($files as $item) {
             $array[] = ['mail' => $item];
-            if (count($array) > 100) {
+            $count++;
+            if (count($array) > 100 || $count == count($files)) {
                 ControlMailList::insert($array);
                 $array = [];
             }
-            $count++;
         }
         Toastr::success("Загружено Control Mail:  ".$count);
 

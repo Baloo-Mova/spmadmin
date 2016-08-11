@@ -73,18 +73,15 @@ class HomeController extends Controller
         $emailInfo              = [];
         $emailInfo['all']       = smtpfind::count();
         $emailInfo['needCheck'] = smtpfind::where(['isget' => 0])->count();
-        $emailInfo['checked'] = smtpfind::where([
-            ['status', '<>', 'NULL'],
-            ['status', '<>', '']
-        ])->count();
+        $emailInfo['checked'] = smtpfind::where(['isget'=>1])->count();
+        $emailInfo['good'] = smtpfind::where('status','not like','%none%')->count();
+        $emailInfo['bad'] = smtpfind::where('status','like','%none%')->count();
 
         $Epool              = [];
         $Epool['needCheck'] = smtpfindpiece::where(['isget' => 0])->count();
-        $Epool['inCheck'] = smtpfindpiece::where(['isget'=>1])->count();
-        $Epool['checked'] = smtpfindpiece::where([
-            ['status', '<>', 'NULL'],
-            ['status', '<>', '']
-        ])->count();
+        $Epool['inCheck'] = smtpfindpiece::where(['isget'=>1])->count(); 
+        $Epool['good'] = smtpfindpiece::where('status','not like','none%')->count();
+        $Epool['bad'] = smtpfindpiece::where('status','like','none%')->count();
 
         $data['themeCount']   = Themes::count();
         $data['messageCount'] = Messages::count();

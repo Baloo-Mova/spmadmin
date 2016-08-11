@@ -19,7 +19,7 @@ Route::get('/logout', 'Auth\AuthController@logout');
 
 Route::get('/cmd', 'CommandController@index');
 Route::post('/cmd', 'CommandController@postIndex');
-Route::post('/sendcheckers', 'CommandController@sendcheckers');
+Route::post('/sendcheckres', 'CommandController@sendcheckers');
 Route::post('/smtpcheckres', 'CommandController@smtpcheckres');
 
 

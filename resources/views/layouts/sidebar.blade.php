@@ -27,12 +27,12 @@
                 <a href="{{ url('/messages') }}"><span><i class="fa fa-server"></i> Загрузить Message</span></a></li>
             <li class="{{ Request::is('/home') ? 'active' : ''}} ">
                 <a href="{{ url('/smtp-upload') }}"><span><i class="fa fa-server"></i> Загрузить SMTP</span></a></li>
-            <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="/smtpfindupload"><span><i class="fa fa-envelope-o"></i> Email для получения SMTP</span></a>
+            <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="/smtpfindupload"><span><i class="fa fa-envelope-o"></i>Загрузить Email для SMTPFIND</span></a>
             </li>
             <li class="{{ Request::is('settings/email') ? 'active' : ''}} ">
-                <a href="{{ url('/settings/email') }}"><span><i class="fa fa-cogs"></i> Настройки Email</span></a></li>
+                <a href="{{ url('/settings/email') }}"><span><i class="fa fa-cog fa-spin"></i> Настройки Email</span></a></li>
             <li class="{{ Request::is('settings/smtp') ? 'active' : ''}} ">
-                <a href="{{ url('/settings/smtp') }}"><span><i class="fa fa-cogs"></i> Настройки проверок SMTP</span></a>
+                <a href="{{ url('/settings/smtp') }}"><span><i class="fa fa-cog fa-spin"></i> Настройки проверок SMTP</span></a>
             </li>
         </ul><!-- /.sidebar-menu -->
     </section>

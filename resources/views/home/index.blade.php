@@ -93,14 +93,16 @@
                         </div>
                         <div class="col-md-1">All <span class="badge">{{ $emailInfo['all'] }}</span></div>
                         <div class="col-md-3">Wait <span class="badge">{{ $emailInfo['needCheck'] }}</span></div>
-                        <div class="col-md-1">Checked <span class="badge">{{ $emailInfo['checked'] }}</span></div>
+                         <div class="col-md-1">Good <span class="badge">{{ $emailInfo['good'] }}</span></div>
+                        <div class="col-md-1">Bad <span class="badge">{{ $emailInfo['bad'] }}</span></div>
                     </div>
                     <hr/>
                     <div class="row">
                         <div class="col-md-7">Пулл <a href="{{ url('/update-email-pull?redirect=yes') }}"><i class="fa fa-refresh"></i></a></div>
                         <div class="col-md-1">Wait <span class="badge">{{ $Epool['needCheck'] }}</span></div>
                         <div class="col-md-2 ">Checking <span class="badge">{{ $Epool['inCheck'] }}</span></div>
-                        <div class="col-md-1 ">Checked <span class="badge">{{ $Epool['checked'] }}</span></div>
+                        <div class="col-md-1">Good <span class="badge">{{ $Epool['good'] }}</span></div>
+                        <div class="col-md-1">Bad <span class="badge">{{ $Epool['bad'] }}</span></div>
                     </div>
 
                     <div style="margin-bottom: 10px;"></div>

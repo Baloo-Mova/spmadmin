@@ -162,8 +162,8 @@ class CommandController extends Controller
                     }
                     echo "\n";
 
-                    $controlMail = ControlMailList::orderByRaw('RAND()')->take(1)->get();
-                    echo $controlMail[0]->mail . "\n";
+                    $controlMail = ControlMailList::orderByRaw('RAND()')->first();
+                    echo $controlMail->mail . "\n";
 
                     echo $settingsSMTP->mark . "\n";
 
@@ -269,28 +269,37 @@ class CommandController extends Controller
 
     public function sendcheckers(Request $request)
     {
-        $set = SettingsForCheckSMTP::find(1);
-        $result = $request->get('result');
-
-        Storage::put("sendcheckers.txt", json_encode($_POST));
+         $set = SettingsForCheckSMTP::find(1);
+        $result = trim($request->get('result')); 
+         
         if(isset($result) && strlen($result)>3){
-            $resultArray = explode("\n", $result);
+
+            $resultArray = explode("\n", $result); 
+
+
             foreach($resultArray as $value){
-                $smtp = explode(' !-! ', $value)[0];
-                $status = trim(explode(' !-! ', $value)[1]);
+
+                $value = trim($value); 
+                if(empty($value)){
+                     continue;
+                }
+                $smtp = explode("!-!", $value)[0];
+                $status = trim(explode("!-!", $value)[1]);
+
                 $logFile = "";
-                $status_err = trim(explode(':', $status)[1]);
-                $status = trim(explode(':', $status)[0]);
+                $status_err = "";
 
                 if(strtoupper($status) == 'SENT'){
                     $logFile = "smtp_check_logs/".$set['mark']."_good.txt";
                 }else{
                     $logFile = "smtp_check_logs/".$set['mark']."_bad.txt";
-                }
+                   $status_err = trim(explode(':', $status, 2)[1]);
+                   $status = trim(explode(':', $status,2)[0]);
 
+                }   
                 Storage::append($logFile, $value."\r\n");
 
-                $smtp = smtplistpiece::where(['smtp'=>$smtp])->first();
+                $smtp = smtplistpiece::where(['smtp'=>trim($smtp)])->first();
                 $smtp->botid = 0;
                 $smtp->isget = 1;
                 $smtp->time = '';
