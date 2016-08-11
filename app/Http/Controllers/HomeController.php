@@ -36,8 +36,6 @@ class HomeController extends Controller
     public function index()
     {
         $data = [
-            'themeInfo'         => Storage::has(config('config.theme')) ? "Файл " . config('config.theme') . " загружен" : "Файл " . config('config.theme') . " отсутствует",
-            'messageInfo'       => Storage::has(config('config.message')) ? "Файл " . config('config.message') . " загружен" : "Файл " . config('config.message') . " отсутствует",
             'smtpCount'         => SMTP::count(),
             'mailsFileCount'    => count(Storage::files(config('config.emails.mails'))),
             'attachFileCount'   => count(Storage::files(config('config.attach'))),
@@ -60,7 +58,6 @@ class HomeController extends Controller
         $smtpInfo              = [];
         $smtpInfo['all']       = SmtpListForCheck::count();
         $smtpInfo['needCheck'] = SmtpListForCheck::where(['isget' => 0])->count();
-        $smtpInfo['inCheck']   = SmtpListForCheck::where('time', '<>', '')->count();
         $smtpInfo['good']      = SmtpListForCheck::where(['status' => 'SENT'])->count();
         $smtpInfo['bad']       = SmtpListForCheck::where(['status' => 'BAD'])->count();
 
@@ -73,7 +70,6 @@ class HomeController extends Controller
         $emailInfo              = [];
         $emailInfo['all']       = smtpfind::count();
         $emailInfo['needCheck'] = smtpfind::where(['isget' => 0])->count();
-        $emailInfo['checked'] = smtpfind::where(['isget'=>1])->count();
         $emailInfo['good'] = smtpfind::where('status','not like','%none%')->count();
         $emailInfo['bad'] = smtpfind::where('status','like','%none%')->count();
 
@@ -83,9 +79,6 @@ class HomeController extends Controller
         $Epool['good'] = smtpfindpiece::where('status','not like','none%')->count();
         $Epool['bad'] = smtpfindpiece::where('status','like','none%')->count();
 
-        $data['themeCount']   = Themes::count();
-        $data['messageCount'] = Messages::count();
-
         return view('home.index',
             compact('data', 'status', 'bots', 'checkBlackList', 'botsInfo', 'smtpInfo', 'pool','emailInfo','Epool'));
     }
@@ -93,12 +86,6 @@ class HomeController extends Controller
     public function delete($name)
     {
         switch ($name) {
-            case 'themefile' :
-                Storage::delete(config('config.theme'));
-                break;
-            case 'messagefile' :
-                Storage::delete(config('config.message'));
-                break;
             case 'smtpclear' :
                 DB::table('smtp')->truncate();
                 break;
@@ -151,53 +138,6 @@ class HomeController extends Controller
                 }
             }
         }
-
-        return redirect(url('/'));
-    }
-
-    public function themes()
-    {
-        if (Storage::has(config('config.theme'))) {
-            $themes = explode("\n", Storage::get(config('config.theme')));
-            $now    = 1;
-            DB::table('themes')->delete();
-            foreach ($themes as $theme) {
-                $array[] = ['thema' => $theme];
-                if (count($array) > 100 || $now++ == count($themes)) {
-                    Themes::insert($array);
-                    $array = [];
-                }
-            }
-
-            Toastr::success("Темы загружены");
-
-            return redirect(url('/'));
-        }
-
-        Toastr::error("Что то пошло не так, возможно нету файла ".config('config.theme')." в storage/app");
-
-        return redirect(url('/'));
-    }
-
-    public function messages()
-    {
-        if (Storage::has(config('config.message'))) {
-            $themes = explode("\n", Storage::get(config('config.message')));
-            $now    = 1;
-            DB::table('messages')->delete();
-            foreach ($themes as $theme) {
-                $array[] = ['message' => $theme];
-                if (count($array) > 100 || $now++ == count($themes)) {
-                    Messages::insert($array);
-                    $array = [];
-                }
-            }
-
-            Toastr::success("Сообщения загружены");
-
-            return redirect(url('/'));
-        }
-        Toastr::error("Что то пошло не так, возможно нету файла ".config('config.message')." в storage/app");
 
         return redirect(url('/'));
     }

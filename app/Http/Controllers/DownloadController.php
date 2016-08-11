@@ -107,7 +107,7 @@ class DownloadController extends Controller
 
     public function attach(Request $request, $filename)
     {
-        return Response::download(storage_path('app/' . config('config.go_attach')) . "/" . $filename, $filename);
+        return Response::download(storage_path('app/' . config('config.attach')) . "/" . $filename, $filename);
     }
 
     public function checkAttach($filename)

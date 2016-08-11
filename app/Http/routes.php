@@ -25,8 +25,6 @@ Route::post('/smtpcheckres', 'CommandController@smtpcheckres');
 
 Route::get('/delete/{name}', 'HomeController@delete');
 Route::get('/smtp-upload', 'HomeController@uploadSmtp');
-Route::get('/themes', 'HomeController@themes');
-Route::get('/messages', 'HomeController@messages');
 Route::get('/smtpfindupload', 'HomeController@uploadEmailsForSmtpFind');
 
 Route::get('/settings/email', 'SettingsController@emailSettings');

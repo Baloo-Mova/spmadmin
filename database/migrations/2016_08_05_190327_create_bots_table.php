@@ -15,17 +15,17 @@ class CreateBotsTable extends Migration {
 		Schema::create('bots', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->string('ip', 50)->unique('ip');
+			$table->string('ip', 15)->unique('ip');
 			$table->integer('status')->default(0);
-			$table->string('time', 50)->nullable();
+			$table->string('time', 30)->nullable();
 			$table->integer('result')->nullable();
-			$table->integer('life')->default(1);
-			$table->integer('ban')->nullable();
-			$table->integer('otk')->nullable();
-			$table->integer('bot_status')->default(2);
-			$table->integer('black')->nullable();
-			$table->string('bandate')->nullable();
-			$table->string('blacklistdate')->nullable();
+			$table->integer('life')->default(1)->index();
+			$table->integer('ban')->nullable()->index();
+			$table->integer('otk')->nullable()->index();
+			$table->integer('bot_status')->default(0);
+			$table->integer('black')->nullable()->index();
+			$table->string('bandate',30)->nullable();
+			$table->string('blacklistdate',30)->nullable();
             $table->timestamps();
 		});
 	}

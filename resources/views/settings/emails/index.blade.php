@@ -15,89 +15,69 @@
                         <div class="form-group">
                             <label for="inputEmail3" class="col-md-4 control-label">Количество писем от сервера</label>
                             <div class="col-sm-8">
-                                <textarea name="kolps" class="form-control" id="inputEmail3">{{ $settings['kolps'] }}</textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-md-4 control-label">Ваш email</label>
-                            <div class="col-sm-8">
-                                <textarea    name="mot" class="form-control" id="inputEmail3" placeholder="">{{ $settings['mot'] }}</textarea>
+                                <textarea name="emails_from_server" class="form-control" id="inputEmail3">{{ $settings['emails_from_server'] }}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEmail3" class="col-md-4 control-label">ПРАВИЛО | МАКРОС | ИМЯ АТТАЧА </label>
                             <div class="col-sm-8">
-                                <textarea     name="macros_one" class="form-control" id="inputEmail3" placeholder="">{{ $settings['macros_one'] }}</textarea>
+                                <textarea name="attach_name_macros" class="form-control" id="inputEmail3" placeholder="">{{ $settings['attach_name_macros'] }}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEmail3" class="col-md-4 control-label">Thread count</label>
                             <div class="col-sm-8">
-                                <textarea  name="sh" class="form-control" id="inputEmail3" placeholder="">{{ $settings['sh'] }}</textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-md-4 control-label">Строк в файле с мылами</label>
-                            <div class="col-sm-8">
-                                <textarea  name="bb" class="form-control" id="inputEmail3" placeholder="">{{ $settings['bb'] }}</textarea>
+                                <textarea name="thread_count" class="form-control" id="inputEmail3" placeholder="">{{ $settings['thread_count'] }}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEmail3" class="col-md-4 control-label">X-mailer</label>
                             <div class="col-sm-8">
-                                <textarea   name="redirects" class="form-control" id="inputEmail3" placeholder="">{{ $settings['redirects'] }}</textarea>
+                                <textarea name="x_mailer" class="form-control" id="inputEmail3" placeholder="">{{ $settings['x_mailer'] }}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-md-4 control-label">Забор редиректов 2</label>
+                            <label for="inputEmail3" class="col-md-4 control-label">Количество SMTP за 1 заход</label>
                             <div class="col-sm-8">
-                                <textarea  name="theme" class="form-control" id="inputEmail3" placeholder="">{{ $settings['theme'] }}</textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-md-4 control-label">DNS SERVERS</label>
-                            <div class="col-sm-8">
-                                <textarea  name="macros_two" class="form-control" id="inputEmail3" placeholder="">{{ $settings['macros_two'] }}</textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-md-4 control-label">Забор аттачей</label>
-                            <div class="col-sm-8">
-                                <textarea   name="message" class="form-control" id="inputEmail3" placeholder="">{{ $settings['message'] }}</textarea>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="inputEmail3" class="col-md-4 control-label">Строк в файле с SMTP</label>
-                            <div class="col-sm-8">
-                                <textarea  name="macros_try" class="form-control" id="inputEmail3" placeholder="">{{ $settings['macros_try'] }}</textarea>
+                                <textarea name="smtp_count" class="form-control" id="inputEmail3" placeholder="">{{ $settings['smtp_count'] }}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEmail3" class="col-md-4 control-label">Макрос 1</label>
                             <div class="col-sm-8">
-                                <textarea   name="macros1" class="form-control" id="inputEmail3" placeholder="">{{ $settings['macros1'] }}</textarea>
+                                <textarea name="macros1" class="form-control" id="inputEmail3" placeholder="">{{ $settings['macros1'] }}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEmail3" class="col-md-4 control-label">Макрос 2</label>
                             <div class="col-sm-8">
-                                <textarea   name="macros2" class="form-control" id="inputEmail3" placeholder="">{{ $settings['macros2'] }}</textarea>
+                                <textarea name="macros2" class="form-control" id="inputEmail3" placeholder="">{{ $settings['macros2'] }}</textarea>
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="inputEmail3" class="col-md-4 control-label">Макрос 3</label>
                             <div class="col-sm-8">
-                                <textarea   name="macros3" class="form-control" id="inputEmail3" placeholder="">{{ $settings['macros3'] }}</textarea>
+                                <textarea name="macros3" class="form-control" id="inputEmail3" placeholder="">{{ $settings['macros3'] }}</textarea>
                             </div>
                         </div>
-
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-md-4 control-label">Тема сообщения</label>
+                            <div class="col-sm-8">
+                                <textarea name="message_theme" class="form-control" id="inputEmail3" placeholder="">{{ $settings['message_theme'] }}</textarea>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-md-4 control-label">Текст сообщения</label>
+                            <div class="col-sm-8">
+                                <textarea name="message_text" class="form-control" id="inputEmail3" placeholder="">{{ $settings['message_text'] }}</textarea>
+                            </div>
+                        </div>
                         <div class="form-group">
                             <div class="col-md-6 col-md-offset-2">
                                 <label for="checkbox1" class="col-md-6 control-label">Отправлять аттачи</label>
-                                <input type="checkbox" name="html" {{ $settings['html'] ? "checked" : "" }} class="form-control" id="includefile">
+                                <input type="checkbox" name="send_attach" {{ $settings['send_attach'] ? "checked" : "" }} class="form-control" id="includefile">
                             </div>
                         </div>
-
                     </div>
                     <!-- /.box-body -->
                     <div class="box-footer">

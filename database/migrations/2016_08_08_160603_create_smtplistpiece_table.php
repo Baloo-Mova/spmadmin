@@ -14,13 +14,13 @@ class CreateSmtplistpieceTable extends Migration {
 	{
 		Schema::create('smtplistpiece', function(Blueprint $table)
 		{
-			$table->integer('id', true);
-			$table->string('smtp')->nullable();
-			$table->integer('botid')->nullable();
-			$table->integer('isget')->nullable()->default(0);
-			$table->string('time')->nullable();
-			$table->string('status')->nullable();
-			$table->string('errmsg')->nullable();
+            $table->integer('id', true);
+            $table->string('smtp',80)->nullable()->index();
+            $table->integer('botid')->nullable();
+            $table->integer('isget')->nullable()->default(0)->index();
+            $table->string('time',30)->nullable()->index();
+            $table->string('status',30)->nullable()->index();
+            $table->string('errmsg')->nullable();
 		});
 	}
 

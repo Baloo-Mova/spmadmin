@@ -15,19 +15,15 @@ class CreateMailSettingsTable extends Migration {
 		Schema::create('mail_settings', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->text('theme', 65535)->nullable();
-			$table->text('message', 65535)->nullable();
-			$table->text('bb', 65535)->nullable();
-			$table->text('sh', 65535)->nullable();
-			$table->text('from', 65535)->nullable();
-			$table->text('reply', 65535)->nullable();
-			$table->text('mot', 65535)->nullable();
-			$table->text('kolps', 65535)->nullable();
-			$table->integer('html')->default(0);
-			$table->text('redirects', 65535)->nullable();
-			$table->text('macros_one')->nullable();
-			$table->text('macros_two', 65535)->nullable();
-			$table->text('macros_try', 65535)->nullable();
+			$table->text('thread_count')->nullable();
+			$table->text('emails_from_server')->nullable();
+			$table->boolean('send_attach')->default(0);
+			$table->text('x_mailer')->nullable();
+			$table->text('attach_name_macros')->nullable();
+			$table->text('macros_two')->nullable();
+			$table->text('smtp_count')->nullable();
+            $table->text('message_theme')->nullable();
+            $table->text('message_text')->nullable();
 			$table->text('macros1')->nullable();
 			$table->text('macros2')->nullable();
 			$table->text('macros3')->nullable();

@@ -19,20 +19,40 @@
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
             <!-- Optionally, you can add icons to the links -->
-            <li class="{{ Request::is('/') ? 'active' : ''}} "><a href="{{ url('/') }}"><span><i class="fa fa-home"></i> Home</span></a>
+            <li class="{{ Request::is('/') ? 'active' : ''}} ">
+                <a href="{{ url('/') }}">
+                    <span>
+                        <i class="fa fa-home"></i> Home
+                    </span>
+                </a>
             </li>
             <li class="{{ Request::is('/home') ? 'active' : ''}} ">
-                <a href="{{ url('/themes') }}"><span><i class="fa fa-server"></i> Загрузить Темы</span></a></li>
+                <a href="{{ url('/smtp-upload') }}">
+                    <span>
+                        <i class="fa fa-server"></i> Upload SMTP for SPAM(3)
+                    </span>
+                </a>
+            </li>
             <li class="{{ Request::is('/home') ? 'active' : ''}} ">
-                <a href="{{ url('/messages') }}"><span><i class="fa fa-server"></i> Загрузить Message</span></a></li>
-            <li class="{{ Request::is('/home') ? 'active' : ''}} ">
-                <a href="{{ url('/smtp-upload') }}"><span><i class="fa fa-server"></i> Загрузить SMTP</span></a></li>
-            <li class="{{ Request::is('/home') ? 'active' : ''}} "><a href="/smtpfindupload"><span><i class="fa fa-envelope-o"></i>Загрузить Email для SMTPFIND</span></a>
+                <a href="/smtpfindupload">
+                    <span>
+                        <i class="fa fa-envelope-o"></i> Upload Emails for FINDSMTP(2)
+                    </span>
+                </a>
             </li>
             <li class="{{ Request::is('settings/email') ? 'active' : ''}} ">
-                <a href="{{ url('/settings/email') }}"><span><i class="fa fa-cog fa-spin"></i> Настройки Email</span></a></li>
+                <a href="{{ url('/settings/email') }}">
+                    <span>
+                        <i class="fa fa-cog fa-spin"></i> Email Spam Settings
+                    </span>
+                </a>
+            </li>
             <li class="{{ Request::is('settings/smtp') ? 'active' : ''}} ">
-                <a href="{{ url('/settings/smtp') }}"><span><i class="fa fa-cog fa-spin"></i> Настройки проверок SMTP</span></a>
+                <a href="{{ url('/settings/smtp') }}">
+                    <span>
+                        <i class="fa fa-cog fa-spin"></i> SMTP Check Settings
+                    </span>
+                </a>
             </li>
         </ul><!-- /.sidebar-menu -->
     </section>

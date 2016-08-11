@@ -15,12 +15,11 @@ class CreateSmtpfindTable extends Migration {
 		Schema::create('smtpfind', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->integer('isget')->nullable()->default(0);
-			$table->string('time')->nullable()->default('');
+			$table->integer('isget')->nullable()->default(0)->index();
+			$table->string('time',30)->nullable()->default('')->index();
 			$table->integer('botid')->nullable();
-			$table->string('emailpas');
-
-            $table->index('emailpas');
+			$table->string('emailpas',50)->index();
+            $table->string('status',30)->nullable()->index();
 		});
 	}
 

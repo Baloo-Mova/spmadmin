@@ -21,7 +21,6 @@ class SettingsController extends Controller
 
     public function smtpSettings()
     {
-
         $settings = SettingsForCheckSMTP::whereId(1)->first()->toArray();
 
         return view('settings.smtp.index', compact('settings'));
@@ -50,7 +49,7 @@ class SettingsController extends Controller
     {
         $settings = MailSettings::whereId(1)->first();
         $settings->fill($request->all());
-        $request->get('html') ? $settings->html = 1 : $settings->html = 0;
+        $request->get('send_attach') ? $settings->send_attach = 1 : $settings->send_attach = 0;
         $settings->save();
         Toastr::success("Изменения сохранены");
 
