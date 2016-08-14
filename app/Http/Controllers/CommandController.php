@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Bots;
 use App\ControlMailList;
+use App\FindSmtpSettings;
 use App\MailSettings;
 use App\PannelSettings;
 use App\SettingsForCheckSMTP;
@@ -131,7 +132,7 @@ class CommandController extends Controller
 
             $settingsSMTP = SettingsForCheckSMTP::find(1);
 
-            $smtpListBotCount = smtplistpiece::where('botid', '<>', 'NULL')->select('bot_id')->distinct()->count();
+            $smtpListBotCount = smtplistpiece::where('botid', '<>', '')->select('bot_id')->distinct()->count();
 
             $settings = MailSettings::find(1);
 
@@ -196,13 +197,11 @@ class CommandController extends Controller
 
         if ($statusAdmin->status == 'SMTPFIND') {
 
-            $settingsSMTP = SettingsForCheckSMTP::find(1);
-            $list         = smtpfindpiece::where(['isget' => 0])->orderByRaw('RAND()')->take($settingsSMTP->countsmtp)->get();
+            $settingsSMTP = FindSmtpSettings::find(1);
+            $list         = smtpfindpiece::where(['isget' => 0])->orderByRaw('RAND()')->take($settingsSMTP->count_emails)->get();
             if (count($list) > 0) {
-
                 echo "2\n";
                 echo $settingsSMTP->threads . "\n";
-
                 foreach ($list as $item) {
                     $item->isget = 1;
                     echo $item->emailpas . "\t";

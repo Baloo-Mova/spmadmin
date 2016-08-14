@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\FindSmtpSettings;
 use App\MailSettings;
 use App\SettingsForCheckSMTP;
 use App\ControlMailList;
@@ -104,6 +105,21 @@ class SettingsController extends Controller
         Toastr::success("Загружено Control Mail:  ".$count);
 
         return redirect('/settings/smtp');
+    }
+
+    public function findSettingsStore(Request $request){
+        $settings = FindSmtpSettings::whereId(1)->first();
+        $settings->fill($request->all());
+        $settings->save();
+        Toastr::success("Изменения сохранены");
+
+        return redirect('/settings/find');
+    }
+
+    public function findSettings(Request $request){
+        $settings = FindSmtpSettings::find(1)->toArray();
+
+        return view('settings.find.index', compact('settings'));
     }
 
 }

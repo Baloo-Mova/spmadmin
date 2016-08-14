@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\FindSmtpSettings;
 use App\smtpfind;
 use App\smtpfindpiece;
 use App\SmtpListForCheck;
@@ -16,20 +17,13 @@ class PullController extends Controller
 {
     public function smtp(Request $request){
 
-        $count = SettingsForCheckSMTP::whereId(1)->first()->countbase;
+        $count = SettingsForCheckSMTP::find(1)->countbase;
 
-        smtplistpiece::where('status','<>','')->update(['isget' => 0,'time'=>'','botid'=>0]);
-        $update = smtplistpiece::where('status','<>','')->get();
-        foreach ($update as $item){
-           $smtp = SmtpListForCheck::find($item->id);
-            $smtp->status = $item->status;
-            $smtp->isget = 1;
-            $smtp->errmsg = $item->errmsg;
-            $smtp->save();
-        }
-        DB::table('smtplistpiece')->delete();
+        smtplistpiece::where('status','=','')->update(['isget' => 0,'time'=>'','botid'=>0]);
+        SmtpListForCheck::join('smtplistpiece','smtplistpiece.id' ,'=', 'smtplistforcheck.id')->update(['smtplistforcheck.isget'=>DB::raw('smtplistpiece.isget'),'smtplistforcheck.status'=>DB::raw('smtplistpiece.status'),'smtplistforcheck.errmsg'=>DB::raw('smtplistpiece.errmsg')]);
+        DB::table('smtplistpiece')->truncate();
          $count = !empty($count) ? $count : "2000";
-        DB::statement("INSERT INTO `smtplistpiece`(id,`smtp`) select id, `smtp` from smtplistforcheck where isget = 0 ORDER BY RAND() limit $count");
+        DB::statement("INSERT INTO `smtplistpiece`(id,`smtp`) select id, `smtp` from smtplistforcheck where isget = 0 limit $count");
 
         $val =$request->get('redirect');
         if(isset($val)){
@@ -39,30 +33,19 @@ class PullController extends Controller
     }
 
     public function email(Request $request){
-
-        $count = SettingsForCheckSMTP::whereId(1)->first()->countbase;
+        $count = FindSmtpSettings::find(1)->pull_size;
 
         smtpfindpiece::where([
-            ['status', '=', 'NULL'],
             ['status', '=', '']
         ])->update(['isget' => 0,'time'=>'','botid'=>0]);
 
-        $update = smtpfindpiece::where([
-            ['status', '<>', 'NULL'],
-            ['status', '<>', '']
-        ])->get();
+        smtpfind::join('smtpfindpiece','smtpfindpiece.id' ,'=', 'smtpfind.id')->update(['smtpfind.isget'=>1
+                                                                                        ,'smtpfind.status'=>DB::raw('smtpfindpiece.status')]);
 
-        foreach ($update as $item){
-            $smtp = smtpfind::find($item->id);
-            $smtp->status = $item->status;
-            $smtp->isget = 1;
-            $smtp->save();
-        }
+        DB::table('smtpfindpiece')->truncate();
 
-        DB::table('smtpfindpiece')->delete();
         $count = !empty($count) ? $count : "2000";
-
-        DB::statement("INSERT INTO `smtpfindpiece`(id,`emailpas`) select id, `emailpas` from smtpfind where isget = 0 ORDER BY RAND() limit $count");
+        DB::statement("INSERT INTO `smtpfindpiece`(id,`emailpas`) select id, `emailpas` from smtpfind where isget = 0 limit $count");
 
         $val =$request->get('redirect');
         if(isset($val)){

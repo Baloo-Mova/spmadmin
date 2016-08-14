@@ -31,6 +31,8 @@ Route::get('/settings/email', 'SettingsController@emailSettings');
 Route::get('/settings/smtp', 'SettingsController@smtpSettings');
 Route::post('/settings/email', 'SettingsController@emailSettingsStore');
 Route::post('/settings/smtp', 'SettingsController@smtpSettingsStore');
+Route::get('/settings/find',"SettingsController@findSettings");
+Route::post('/settings/find',"SettingsController@findSettingsStore");
 
 Route::post('/settings/mail-text-file', 'SettingsController@storeMailTextFile');
 Route::post('/settings/smtp-list', 'SettingsController@storeSmtpList');
@@ -48,6 +50,9 @@ Route::get('/download/fromname/{filename}', 'DownloadController@fromname');
 Route::get('/download/attach/{filename}', 'DownloadController@attach');
 Route::get('/download/smtp_check_attach/{filename}', 'DownloadController@checkAttach');
 Route::get('/download/mailTextFile/{filename}', 'DownloadController@mailTextFile');
+Route::get('/download/{filename}', function($filename){
+    return Response::download(storage_path('app/download/') . $filename, $filename);
+});
 
 Route::get('/update-smtp-pull', 'PullController@smtp');
 Route::get('/update-email-pull', 'PullController@email');

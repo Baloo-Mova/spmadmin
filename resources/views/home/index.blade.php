@@ -205,11 +205,11 @@
                             <i class="fa fa-minus"></i></button>
                     </div>
                 </div>
-                <div class="box-body">
+                <div class="box-body text-center">
                     @forelse($bots as $bot)
                         <div class="col-md-3"> {{ $bot->id }}</div>
                         <div class="col-md-3"> {{ $bot->ip }}</div>
-                        <div class="col-md-3"> {{ $bot->status }}</div>
+                        <div class="col-md-3"> {{ $bot->bot_status }}</div>
                         <div class="col-md-3"> {{ $bot->updated_at }}</div>
                     @empty
                         <div class="col-md-12 text-center"> There are no bots yet!</div>

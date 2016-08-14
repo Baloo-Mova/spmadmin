@@ -19,7 +19,7 @@ class CreateSmtplistpieceTable extends Migration {
             $table->integer('botid')->nullable();
             $table->integer('isget')->nullable()->default(0)->index();
             $table->string('time',30)->nullable()->index();
-            $table->string('status',30)->nullable()->index();
+            $table->string('status',100)->nullable()->index();
             $table->string('errmsg')->nullable();
 		});
 	}

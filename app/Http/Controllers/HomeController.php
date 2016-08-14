@@ -70,13 +70,13 @@ class HomeController extends Controller
         $emailInfo              = [];
         $emailInfo['all']       = smtpfind::count();
         $emailInfo['needCheck'] = smtpfind::where(['isget' => 0])->count();
-        $emailInfo['good'] = smtpfind::where('status','not like','%none%')->count();
-        $emailInfo['bad'] = smtpfind::where('status','like','%none%')->count();
+        $emailInfo['good'] = smtpfind::where('status','like','smtp%')->count();
+        $emailInfo['bad'] = smtpfind::where('status','like','none%')->count();
 
         $Epool              = [];
         $Epool['needCheck'] = smtpfindpiece::where(['isget' => 0])->count();
         $Epool['inCheck'] = smtpfindpiece::where(['isget'=>1])->count(); 
-        $Epool['good'] = smtpfindpiece::where('status','not like','none%')->count();
+        $Epool['good'] = smtpfindpiece::where('status','like','smtp%')->count();
         $Epool['bad'] = smtpfindpiece::where('status','like','none%')->count();
 
         return view('home.index',
@@ -146,10 +146,30 @@ class HomeController extends Controller
         if (Storage::has(config('config.smtpfind'))) {
             $emails = explode("\n", Storage::get(config('config.smtpfind')));
             $now    = 1;
-            DB::table('smtpfind')->delete();
+            DB::table('smtpfind')->truncate();
+            $smtps = [];
+            $rules = explode("\n",Storage::get(config('config.smtp_find_default_domains')));
+            foreach ($rules as $rule){
+                $tmp = explode('|', $rule);
+                $smtps[] = [
+                    "smtp"=>trim($tmp[0]),
+                    "domain"=>trim($tmp[1]),
+                ];
+            }
 
             foreach ($emails as $email) {
-                $array[] = ['emailpas' => trim($email)];
+                $status = "";
+                $temp = explode(':',$email);
+                $domain = explode('@',$temp[0]);
+
+                foreach ($smtps as $smtp){
+                    if(trim($domain[1]) == $smtp['smtp']){
+                        //smtp://john@gmail.com|smtp.gmail.com:465|john@gmail.com|passw
+                        $status = "smtp://".$temp[0]."|".$smtp['domain']."|".$email;
+                    }
+                }
+
+                $array[] = ['emailpas' => trim($email), 'status'=>$status];
                 if (count($array) > 100 || $now++ == count($emails)) {
                     smtpfind::insert($array);
                     $array = [];

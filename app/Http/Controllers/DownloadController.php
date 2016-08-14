@@ -56,22 +56,20 @@ class DownloadController extends Controller
 
     public function goodEmail(Request $request)
     {
-        $smtpList = smtpfind::where('status', 'not like', 'none%')->get();
+        $count = smtpfind::where('status','like','smtp%')->count();
 
         $filename = "download_good_email_" . time('U') . ".txt";
         $arr      = [];
-        $max      = count($smtpList);
-        $countNow = 0;
+            $countI  = ceil($count/15000);
 
-        foreach ($smtpList as $smtp) {
-            $arr[] = $smtp->status;
-            $countNow++;
-            if (count($arr) > 100 || $countNow == $max) {
-                Storage::disk('local')->append('download/' . $filename, implode("\n", $arr));
-                $arr = [];
+        for($i = 0;$i < $countI+1;$i++) {
+            $smtpList = smtpfind::where('status','like','smtp%')->take(15000)->skip($i*15000)->get();
+            foreach ($smtpList as $smtp) {
+                $arr[] = $smtp->status;
             }
+            Storage::disk('local')->append('download/' . $filename, implode("\n", $arr));
+            $arr = [];
         }
-
         return Response::download(storage_path('app/download/') . $filename, $filename);
     }
 

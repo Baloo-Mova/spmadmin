@@ -43,14 +43,21 @@
             <li class="{{ Request::is('settings/email') ? 'active' : ''}} ">
                 <a href="{{ url('/settings/email') }}">
                     <span>
-                        <i class="fa fa-cog fa-spin"></i> Email Spam Settings
+                        <i class="fa fa-cog fa-spin"></i> Email Spam(3) Settings
                     </span>
                 </a>
             </li>
             <li class="{{ Request::is('settings/smtp') ? 'active' : ''}} ">
                 <a href="{{ url('/settings/smtp') }}">
                     <span>
-                        <i class="fa fa-cog fa-spin"></i> SMTP Check Settings
+                        <i class="fa fa-cog fa-spin"></i> SMTP Check(8) Settings
+                    </span>
+                </a>
+            </li>
+            <li class="{{ Request::is('settings/find') ? 'active' : ''}} ">
+                <a href="{{ url('/settings/find') }}">
+                    <span>
+                        <i class="fa fa-cog fa-spin"></i> SMTP Find(2) Settings
                     </span>
                 </a>
             </li>
