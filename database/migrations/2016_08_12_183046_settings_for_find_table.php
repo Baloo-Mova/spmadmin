@@ -16,6 +16,7 @@ class SettingsForFindTable extends Migration
             $table->integer('id', true);
             $table->integer('threads')->default(0);
             $table->integer('count_emails')->default(0);
+            $table->integer('timeout')->default(0);
         });
     }
 

@@ -13,5 +13,6 @@ class FindSmtpSettings extends Model
         'count_emails',
         'pull_size',
         'pull_swap_size',
+        'timeout'
     ];
 }

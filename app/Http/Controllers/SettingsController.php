@@ -75,7 +75,7 @@ class SettingsController extends Controller
         $items =explode("\n",File::get($file));
 
         foreach ($items as $item) {
-            $array[] = ['smtp' => trim($item)];
+            $array[] = ['smtp' => trim($item),'status'=>""];
             $count++;
             if (count($array) > 100 || $count == count($items) ) {
                 SmtpListForCheck::insert($array);

@@ -23,7 +23,7 @@ class PullController extends Controller
         SmtpListForCheck::join('smtplistpiece','smtplistpiece.id' ,'=', 'smtplistforcheck.id')->update(['smtplistforcheck.isget'=>DB::raw('smtplistpiece.isget'),'smtplistforcheck.status'=>DB::raw('smtplistpiece.status'),'smtplistforcheck.errmsg'=>DB::raw('smtplistpiece.errmsg')]);
         DB::table('smtplistpiece')->truncate();
          $count = !empty($count) ? $count : "2000";
-        DB::statement("INSERT INTO `smtplistpiece`(id,`smtp`) select id, `smtp` from smtplistforcheck where isget = 0 limit $count");
+        DB::statement("INSERT INTO `smtplistpiece`(id,`smtp`, `status`) select id, `smtp`, `status` from smtplistforcheck where isget = 0 limit $count");
 
         $val =$request->get('redirect');
         if(isset($val)){
@@ -45,7 +45,7 @@ class PullController extends Controller
         DB::table('smtpfindpiece')->truncate();
 
         $count = !empty($count) ? $count : "2000";
-        DB::statement("INSERT INTO `smtpfindpiece`(id,`emailpas`) select id, `emailpas` from smtpfind where isget = 0 limit $count");
+        DB::statement("INSERT INTO `smtpfindpiece`(id,`emailpas`, `status`) select id, `emailpas`, `status` from smtpfind where isget = 0 limit $count");
 
         $val =$request->get('redirect');
         if(isset($val)){

@@ -37,7 +37,7 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="inputEmail3" class="col-md-2 control-label">Await timeout</label>
+                            <label for="inputEmail3" class="col-md-2 control-label">Await timeout (in seconds)</label>
                             <div class="col-sm-10">
                                 <input type="text" name="timeout" value="{{ $settings['timeout'] }}" class="form-control" id="inputEmail3" placeholder="Await Timeout">
                             </div>

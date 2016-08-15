@@ -13,20 +13,19 @@ class DownloadController extends Controller
     public function goodSmtp(Request $request)
     {
 
-        $smtpList = SmtpListForCheck::where(['isget' => 1, 'status' => 'SENT'])->get();
+        $count    = SmtpListForCheck::where(['isget' => 1, 'status' => 'SENT'])->count();
         $filename = "download_good_" . time('U') . ".txt";
         $arr      = [];
-
-        $max      = count($smtpList);
-        $countNow = 0;
-
-        foreach ($smtpList as $smtp) {
-            $arr[] = $smtp->smtp;
-            $countNow++;
-            if (count($arr) > 100 || $countNow == $max) {
-                Storage::disk('local')->append('download/' . $filename, implode("\n", $arr));
-                $arr = [];
+        $countI   = ceil($count / 15000);
+        for ($i = 0; $i < $countI + 1; $i++) {
+            $smtpList = SmtpListForCheck::where(['isget'  => 1,
+                                                 'status' => 'SENT'
+            ])->take(15000)->skip($i * 15000)->get();
+            foreach ($smtpList as $smtp) {
+                $arr[] = $smtp->smtp . " ошибка: " . $smtp->errmsg;
             }
+            Storage::disk('local')->append('download/' . $filename, implode("\n", $arr));
+            $arr = [];
         }
 
         return Response::download(storage_path('app/download/') . $filename, $filename);
@@ -34,21 +33,19 @@ class DownloadController extends Controller
 
     public function badSmtp(Request $request)
     {
-
-        $smtpList = SmtpListForCheck::where(['isget' => 1, 'status' => 'BAD'])->get();
+        $count    = SmtpListForCheck::where(['isget' => 1, 'status' => 'BAD'])->count();
         $filename = "download_bad_" . time('U') . ".txt";
         $arr      = [];
-
-        $max      = count($smtpList);
-        $countNow = 0;
-
-        foreach ($smtpList as $smtp) {
-            $arr[] = $smtp->smtp . " ошибка: " . $smtp->errmsg;
-            $countNow++;
-            if (count($arr) > 100 || $countNow == $max) {
-                Storage::disk('local')->append('download/' . $filename, implode("\n", $arr));
-                $arr = [];
+        $countI   = ceil($count / 15000);
+        for ($i = 0; $i < $countI + 1; $i++) {
+            $smtpList = SmtpListForCheck::where(['isget'  => 1,
+                                                 'status' => 'BAD'
+            ])->take(15000)->skip($i * 15000)->get();
+            foreach ($smtpList as $smtp) {
+                $arr[] = $smtp->smtp . " ошибка: " . $smtp->errmsg;
             }
+            Storage::disk('local')->append('download/' . $filename, implode("\n", $arr));
+            $arr = [];
         }
 
         return Response::download(storage_path('app/download/') . $filename, $filename);
@@ -56,38 +53,39 @@ class DownloadController extends Controller
 
     public function goodEmail(Request $request)
     {
-        $count = smtpfind::where('status','like','smtp%')->count();
+        $count = smtpfind::where('status', 'like', 'smtp%')->count();
 
         $filename = "download_good_email_" . time('U') . ".txt";
         $arr      = [];
-            $countI  = ceil($count/15000);
+        $countI   = ceil($count / 15000);
 
-        for($i = 0;$i < $countI+1;$i++) {
-            $smtpList = smtpfind::where('status','like','smtp%')->take(15000)->skip($i*15000)->get();
+        for ($i = 0; $i < $countI + 1; $i++) {
+            $smtpList = smtpfind::where('status', 'like', 'smtp%')->take(15000)->skip($i * 15000)->get();
             foreach ($smtpList as $smtp) {
                 $arr[] = $smtp->status;
             }
             Storage::disk('local')->append('download/' . $filename, implode("\n", $arr));
             $arr = [];
         }
+
         return Response::download(storage_path('app/download/') . $filename, $filename);
     }
 
     public function badEmail(Request $request)
     {
-        $smtpList = smtpfind::where('status', 'like', 'none%')->get();
+        $count = smtpfind::where('status', 'like', 'none%')->count();
+
         $filename = "download_bad_email_" . time('U') . ".txt";
         $arr      = [];
-        $max      = count($smtpList);
-        $countNow = 0;
+        $countI   = ceil($count / 15000);
 
-        foreach ($smtpList as $smtp) {
-            $arr[] = $smtp->status;
-            $countNow++;
-            if (count($arr) > 100 || $countNow == $max) {
-                Storage::disk('local')->append('download/' . $filename, implode("\n", $arr));
-                $arr = [];
+        for ($i = 0; $i < $countI + 1; $i++) {
+            $smtpList = smtpfind::where('status', 'like', 'none%')->take(15000)->skip($i * 15000)->get();
+            foreach ($smtpList as $smtp) {
+                $arr[] = $smtp->status;
             }
+            Storage::disk('local')->append('download/' . $filename, implode("\n", $arr));
+            $arr = [];
         }
 
         return Response::download(storage_path('app/download/') . $filename, $filename);

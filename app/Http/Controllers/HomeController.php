@@ -161,15 +161,16 @@ class HomeController extends Controller
                 $status = "";
                 $temp = explode(':',$email);
                 $domain = explode('@',$temp[0]);
-
+                $isget = 0;
                 foreach ($smtps as $smtp){
                     if(trim($domain[1]) == $smtp['smtp']){
                         //smtp://john@gmail.com|smtp.gmail.com:465|john@gmail.com|passw
                         $status = "smtp://".$temp[0]."|".$smtp['domain']."|".$email;
+                        $isget = 1;
                     }
                 }
 
-                $array[] = ['emailpas' => trim($email), 'status'=>$status];
+                $array[] = ['emailpas' => trim($email), 'status'=>$status, 'isget'=>$isget];
                 if (count($array) > 100 || $now++ == count($emails)) {
                     smtpfind::insert($array);
                     $array = [];
