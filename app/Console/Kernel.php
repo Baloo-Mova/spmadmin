@@ -46,13 +46,13 @@ class Kernel extends ConsoleKernel
             DB::table('bots')->whereRaw('bots.updated_at <  date_add(now(), Interval -10 MINUTE)')->update(['life'=>0, 'otk'=>1]);
             DB::table('bots')->whereRaw('bots.bandate <  date_add(now(), Interval -1 DAY)')->update(['ban'=>0]);
 
-            DB::table('smtplistpiece')->whereRaw('time <> \'\' and time < date_add(now(), INTERVAL -'.empty($smtpSetting->timeout)? 600 : $smtpSetting->timeout.' SECOND)')->update(['time'=>'', 'botid'=>0, 'isget'=>0]);
-            DB::table('smtpfindpiece')->whereRaw('time <> \'\' and time < date_add(now(), INTERVAL -'.empty($findSetting->timeout)? 600 : $findSetting->timeout.' SECOND)')->update(['time'=>'', 'botid'=>0, 'isget'=>0]);
+//          DB::table('smtplistpiece')->whereRaw("time <> '' and time < date_add(now(), INTERVAL -".empty($smtpSetting->timeout)? 600 : $smtpSetting->timeout.' SECOND)')->update(['time'=>'', 'botid'=>0, 'isget'=>0]);
+//          DB::table('smtpfindpiece')->whereRaw('time <> \'\' and time < date_add(now(), INTERVAL -'.empty($findSetting->timeout)? 600 : $findSetting->timeout.' SECOND)')->update(['time'=>'', 'botid'=>0, 'isget'=>0]);
+            if ($pannelSetting->status == 'SMTPFIND'){
 
-            if ($pannelSetting->status == 'SMTPFIND') {
-                $now = smtpfindpiece::whereRaw('`status` = \'\'')->count();
+                $now = smtpfindpiece::whereRaw("`status` = ''")->count();
                 if($now > $findSetting->pull_swap_size){
-                    return;
+                   exit();
                 }
                 $count = $findSetting->pull_size;
 
@@ -70,10 +70,11 @@ class Kernel extends ConsoleKernel
             }
 
             if ($pannelSetting->status == 'SMTPCHECK') {
+                  DB::table('smtplistpiece')->whereRaw('time <> \'\' and time < date_add(now(), INTERVAL -'.empty($smtpSetting->timeout)? 600 : $smtpSetting->timeout.' SECOND)')->update(['time'=>'', 'botid'=>0, 'isget'=>0]);
                 $now = smtplistpiece::where(['status'=>''])->count();
 
                 if($now > $findSetting->countload){
-                    return;
+                    exit();
                 }
 
                 $count = $smtpSetting->countbase;

