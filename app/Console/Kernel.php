@@ -51,10 +51,11 @@ class Kernel extends ConsoleKernel
 
             if ($pannelSetting->status == 'SMTPFIND') {
                 $now = smtpfindpiece::whereRaw('`status` = \'\'')->count();
-                if($now < $findSetting->pull_swap_size){
+                if($now > $findSetting->pull_swap_size){
                     return;
                 }
                 $count = $findSetting->pull_size;
+
                 smtpfindpiece::where([
                     ['status', '=', '']
                 ])->update(['isget' => 0, 'time' => '', 'botid' => 0]);
@@ -71,7 +72,7 @@ class Kernel extends ConsoleKernel
             if ($pannelSetting->status == 'SMTPCHECK') {
                 $now = smtplistpiece::where(['status'=>''])->count();
 
-                if($now < $findSetting->countload){
+                if($now > $findSetting->countload){
                     return;
                 }
 
