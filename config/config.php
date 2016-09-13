@@ -21,6 +21,7 @@ return [
     'bot_paginate' => 5,
     'fromname' => 'fromname',
     'smtp_check_attach'=>'smtp_check_attach',
-    'smtp_find_default_domains'=>'smtp_default.txt'
+    'smtp_find_default_domains'=>'smtp_default.txt',
+    'login'=>'asdlkhasldhasldkhalsdkasdh'
 
 ];

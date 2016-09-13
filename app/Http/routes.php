@@ -11,50 +11,51 @@
 |
 */
 
-Route::get('/', 'HomeController@index');
+Route::get('/', ['uses'=>'HomeController@index', 'as'=>'home']);
 
-Route::get('/login', 'Auth\AuthController@getLogin');
-Route::post('/login', 'Auth\AuthController@postLogin');
-Route::get('/logout', 'Auth\AuthController@logout');
+Route::get('/'.config('config.login'), ['uses'=>'Auth\AuthController@getLogin', 'as'=>'login']);
+Route::post('/'.config('config.login'), ['uses'=>'Auth\AuthController@postLogin', 'as'=>'login.post']);
+Route::get('/logout', ['uses'=>'Auth\AuthController@logout', 'as'=>'logout']);
 
-Route::get('/cmd', 'CommandController@index');
-Route::post('/cmd', 'CommandController@postIndex');
-Route::post('/sendcheckres', 'CommandController@sendcheckers');
-Route::post('/smtpcheckres', 'CommandController@smtpcheckres');
+Route::get('/cmd', ['uses'=>'CommandController@index', 'as'=>'cmd']);
+Route::post('/cmd', ['uses'=>'CommandController@postIndex', 'as'=>'cmd.post']);
+Route::post('/sendcheckres', ['uses'=>'CommandController@sendcheckers', 'as'=>'sendcheckres']);
+Route::post('/smtpcheckres', ['uses'=>'CommandController@smtpcheckres', 'as'=>'smtpcheckres']);
 
 
-Route::get('/delete/{name}', 'HomeController@delete');
-Route::get('/smtp-upload', 'HomeController@uploadSmtp');
-Route::get('/smtpfindupload', 'HomeController@uploadEmailsForSmtpFind');
+Route::get('/delete/{name}', ['uses'=>'HomeController@delete', 'as'=>'delete']);
+Route::get('/smtp-upload', ['uses'=>'HomeController@uploadSmtp', 'as'=>'smtp.upload']);
+Route::get('/smtpfindupload', ['uses'=>'HomeController@uploadEmailsForSmtpFind', 'as'=>'smtpfindupload']);
 
-Route::get('/settings/email', 'SettingsController@emailSettings');
-Route::get('/settings/smtp', 'SettingsController@smtpSettings');
-Route::post('/settings/email', 'SettingsController@emailSettingsStore');
-Route::post('/settings/smtp', 'SettingsController@smtpSettingsStore');
-Route::get('/settings/find',"SettingsController@findSettings");
-Route::post('/settings/find',"SettingsController@findSettingsStore");
+Route::get('/settings/email', ['uses'=>'SettingsController@emailSettings', 'as'=>'email.settings']);
+Route::get('/settings/smtp', ['uses'=>'SettingsController@smtpSettings', 'as'=>'smtp.settings']);
+Route::post('/settings/email', ['uses'=>'SettingsController@emailSettingsStore', 'as'=>'email.setting.post']);
+Route::post('/settings/smtp', ['uses'=>'SettingsController@smtpSettingsStore', 'as'=>'smtp.settings.post']);
+Route::get('/settings/find',['uses'=>"SettingsController@findSettings", 'as'=>'settings.find']);
+Route::post('/settings/find',['uses'=>"SettingsController@findSettingsStore", 'as'=>'settings.find.post']);
 
-Route::post('/settings/mail-text-file', 'SettingsController@storeMailTextFile');
-Route::post('/settings/smtp-list', 'SettingsController@storeSmtpList');
-Route::post('/settings/mail-list', 'SettingsController@storeMailList');
+Route::post('/settings/mail-text-file', ['uses'=>'SettingsController@storeMailTextFile', 'as'=>'textfile.settings']);
+Route::post('/settings/smtp-list', ['uses'=>'SettingsController@storeSmtpList', 'as'=>'smtplist.settings']);
+Route::post('/settings/mail-list', ['uses'=>'SettingsController@storeMailList', 'as'=>'maillist.settings']);
 
-Route::get('/status/{statusName}', 'StatusController@changeStatus');
-Route::get('/blackList/{status}' , 'StatusController@changeBlack');
+Route::get('/status/{statusName}', ['uses'=>'StatusController@changeStatus', 'as'=>'status']);
+Route::get('/blackList/{status}' , ['uses'=>'StatusController@changeBlack', 'as'=>'blacklist.status']);
 
-Route::get('/download/goodSmtp', 'DownloadController@goodSmtp');
-Route::get('/download/badSmtp', 'DownloadController@badSmtp');
-Route::get('/download/goodEmail', 'DownloadController@goodEmail');
-Route::get('/download/badEmail', 'DownloadController@badEmail');
-Route::get('/download/go-mails/{filename}', 'DownloadController@goMails');
-Route::get('/download/fromname/{filename}', 'DownloadController@fromname');
-Route::get('/download/attach/{filename}', 'DownloadController@attach');
-Route::get('/download/smtp_check_attach/{filename}', 'DownloadController@checkAttach');
-Route::get('/download/mailTextFile/{filename}', 'DownloadController@mailTextFile');
+Route::get('/download/goodSmtp', ['uses'=>'DownloadController@goodSmtp', 'as'=>'goodsmtp.download']);
+Route::get('/download/badSmtp', ['uses'=>'DownloadController@badSmtp', 'as'=>'badsmtp.download']);
+Route::get('/download/goodEmail', ['uses'=>'DownloadController@goodEmail', 'as'=>'goodemail.download']);
+Route::get('/download/badEmail', ['uses'=>'DownloadController@badEmail', 'as'=>'bademail.download']);
+Route::get('/download/go-mails/{filename}', ['uses'=>'DownloadController@goMails', 'as'=>'gomails.download']);
+Route::get('/download/fromname/{filename}', ['uses'=>'DownloadController@fromname', 'as'=>'fromname.download']);
+Route::get('/download/attach/{filename}', ['uses'=>'DownloadController@attach', 'as'=>'attach.download']);
+Route::get('/download/smtp_check_attach/{filename}', ['uses'=>'DownloadController@checkAttach', 'as'=>'smtpcheckattach.download']);
+Route::get('/download/mailTextFile/{filename}', ['uses'=>'DownloadController@mailTextFile', 'as'=>'mailtextfile.download']);
+
 Route::get('/download/{filename}', function($filename){
     return Response::download(storage_path('app/download/') . $filename, $filename);
 });
 
-Route::get('/update-smtp-pull', 'PullController@smtp');
-Route::get('/update-email-pull', 'PullController@email');
+Route::get('/update-smtp-pull', ['uses'=>'PullController@smtp', 'as'=>'update.smtp.pool']);
+Route::get('/update-email-pull', ['uses'=>'PullController@email', 'as'=>'update.email.pool']);
 
 

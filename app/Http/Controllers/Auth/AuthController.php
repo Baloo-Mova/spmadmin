@@ -31,7 +31,7 @@ class AuthController extends Controller
      * @var string
      */
     protected $redirectTo = '/';
-    protected $redirectAfterLogout = "/login";
+    protected $redirectAfterLogout = "/";
 
     /**
      * Create a new authentication controller instance.
@@ -40,7 +40,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
+        $this->middleware('auth', ['except' => 'logout']);
     }
 
     /**
