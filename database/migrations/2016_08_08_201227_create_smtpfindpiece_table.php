@@ -18,8 +18,8 @@ class CreateSmtpfindpieceTable extends Migration {
 			$table->integer('isget')->nullable()->default(0);
 			$table->string('time',30)->nullable()->default('');
 			$table->integer('botid')->nullable();
-			$table->string('emailpas',50)->index();
-            $table->string('status',100)->nullable()->index();
+			$table->string('emailpas')->index();
+            $table->string('status')->nullable()->index();
 		});
 	}
 
