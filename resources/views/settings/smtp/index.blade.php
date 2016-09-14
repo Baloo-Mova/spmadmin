@@ -1,6 +1,8 @@
 @extends('layouts.dashboard')
 
 @section('content')
+
+
     <div class="container">
         <div class="col-md-8" style="margin: 0 auto; float: none;">
             <div class="box box-primary">
@@ -119,7 +121,6 @@
                     <div class="box-body with-border text-center">
                         {{ csrf_field() }}
                         <input type="file" name="file">
-
                     </div>
                     <div class="box-footer">
                         <button type="submit" class="btn-primary btn pull-right">Save</button>

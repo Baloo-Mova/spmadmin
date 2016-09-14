@@ -2,7 +2,6 @@
 
 @section('content')
 
-    {{ dd(md5('this is the string')) }}
     <div class='row'>
         <div class='col-md-12'>
             <!-- Box -->

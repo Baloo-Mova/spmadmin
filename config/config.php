@@ -22,6 +22,6 @@ return [
     'fromname' => 'fromname',
     'smtp_check_attach'=>'smtp_check_attach',
     'smtp_find_default_domains'=>'smtp_default.txt',
-    'login'=>'asdlkhasldhasldkhalsdkasdh'
+    'login'=>'login'
 
 ];
