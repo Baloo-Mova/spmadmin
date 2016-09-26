@@ -14,7 +14,7 @@ class AddSmtpTable extends Migration
     {
         Schema::create('smtp', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('domen',70)->nullable();
+            $table->string('domen',255)->nullable();
         });
     }
 
