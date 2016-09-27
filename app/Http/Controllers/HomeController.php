@@ -35,11 +35,16 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+        $mails = scandir(storage_path('app') . '/' . config('config.emails.mails'));
+        $attach = scandir(storage_path('app') . '/' . config('config.attach'));
+        $go_mails = scandir(storage_path('app') . '/' . config('config.emails.go_mails'));
+
         $data = [
             'smtpCount'         => SMTP::count(),
-            'mailsFileCount'    => count(Storage::files(config('config.emails.mails'))),
-            'attachFileCount'   => count(Storage::files(config('config.attach'))),
-            'go_mailsFileCount' => count(Storage::files(config('config.emails.go_mails'))),
+            'mailsFileCount'    => count($mails)-2,// count(Storage::files(config('config.emails.mails'))),
+            'attachFileCount'   => count($attach)-2,//count(Storage::files(config('config.attach'))),
+            'go_mailsFileCount' => count($go_mails)-2,//count(Storage::files(config('config.emails.go_mails'))),
         ];
 
         $settings       = PannelSettings::whereId(1)->first();

