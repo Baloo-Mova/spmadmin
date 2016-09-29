@@ -60,7 +60,7 @@ class UpdateData extends Command
         DB::table('smtpfindpiece')->whereRaw("time <> '' and time < date_add(now(), INTERVAL -$time SECOND)")->update(['time' => '', 'botid' => 0, 'isget' => 0]);
 
         if ($pannelSetting->status == 'SMTPFIND') {
-            $now = smtpfindpiece::whereRaw("`status` = ''")->count();
+            $now = smtpfindpiece::whereRaw("status = ''")->count();
             if ($now > $findSetting->pull_swap_size) {
                 exit();
             }
@@ -72,9 +72,10 @@ class UpdateData extends Command
             ])->update(['isget' => 0, 'time' => '', 'botid' => 0]);
 
             smtpfind::join('smtpfindpiece', 'smtpfindpiece.id', '=', 'smtpfind.id')->update([
-                'smtpfind.isget' => 1,
+                'smtpfind.isget' => DB::raw('smtpfindpiece.isget'),
                 'smtpfind.status' => DB::raw('smtpfindpiece.status')
             ]);
+
             DB::table('smtpfindpiece')->delete();
             $count = !empty($count) ? $count : "2000";
             DB::statement("INSERT INTO `smtpfindpiece`(id,`emailpas`, `status`) select id, `emailpas`, `status` from smtpfind where isget = 0 limit $count");
