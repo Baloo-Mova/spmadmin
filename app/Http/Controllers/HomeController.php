@@ -39,7 +39,7 @@ class HomeController extends Controller
         $mails = scandir(storage_path('app') . '/' . config('config.emails.mails'));
         $attach = scandir(storage_path('app') . '/' . config('config.attach'));
         $go_mails = scandir(storage_path('app') . '/' . config('config.emails.go_mails'));
- 
+
         $data = [
             'smtpCount'         => SMTP::count(),
             'mailsFileCount'    => count($mails)-2,// count(Storage::files(config('config.emails.mails'))),

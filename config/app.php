@@ -159,7 +159,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         narutimateum\Toastr\ToastrServiceProvider::class,
         Way\Generators\GeneratorsServiceProvider::class,
-        Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class
+        Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
 
     ],
 
