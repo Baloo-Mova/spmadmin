@@ -13,10 +13,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <link href="/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
     <!-- Theme style -->
     <link href="{{ asset("/bower_components/AdminLTE/dist/css/AdminLTE.min.css")}}" rel="stylesheet" type="text/css"/>
-    <!-- AdminLTE Skins. We have chosen the skin-blue for this starter
-          page. However, you can choose any other skin. Make sure you
-          apply the skin class to the body tag so the changes take effect.
-    -->
+
     <link href="{{ asset("/bower_components/AdminLTE/dist/css/skins/skin-blue.min.css")}}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset("/bower_components/toastr/toastr.css") }}" rel="stylesheet" type="text/css"/>
     <link href="{{ asset('css/bootstrap-switch.min.css') }}" rel="stylesheet" type="text/css">
@@ -27,6 +24,9 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
     <![endif]-->
+
+    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+
     @yield('css')
 </head>
 <body class="skin-blue">

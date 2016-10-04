@@ -1,14 +1,12 @@
 @extends('layouts.dashboard')
 
 @section('content')
-    <div class="container">
-        <div class="col-md-8" style="margin: 0 auto; float: none;">
+    <div class="container-fluid">
+        <div class="col-md-6">
             <div class="box box-primary">
                 <div class="box-header with-border text-center">
-                    <h3 class="box-title">Настройки Email</h3>
+                    <h3 class="box-title">Настройки Спама</h3>
                 </div>
-                <!-- /.box-header -->
-                <!-- form start -->
                 <form class="form-horizontal" method="POST">
                     {{ csrf_field() }}
                     <div class="box-body">
@@ -86,6 +84,28 @@
                     </div>
                     <!-- /.box-footer -->
                 </form>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="box box-primary">
+                <div class="box-header text-center">
+                    <h3 class="box-title">Дополнительный функционал</h3>
+                </div>
+                <div class="box-body">
+                    <p>
+                        <a href="{{ route('smtp.upload') }}" class="btn btn-primary"> Загрузить SMTP для спама</a>
+                        <span class="btn-label">Файлы будут загружены из папки <b> {{ storage_path()."\\".config('config.smtpFolder') }}</b></span>
+                    </p>
+                    <p>
+                        <a href="{{ route('smtp.upload') }}" class="btn btn-primary"> Загрузить SMTP для спама</a>
+                        <span class="btn-label">Файлы будут загружены из папки <b> {{ storage_path()."\\".config('config.smtpFolder') }}</b></span>
+                    </p>
+                    <p>
+                        <a href="{{ route('smtp.upload') }}" class="btn btn-primary"> Загрузить SMTP для спама</a>
+                        <span class="btn-label">Файлы будут загружены из папки <b> {{ storage_path()."\\".config('config.smtpFolder') }}</b></span>
+                    </p>
+
+                </div>
             </div>
         </div>
     </div>

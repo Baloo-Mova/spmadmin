@@ -27,13 +27,6 @@
                 </a>
             </li>
             <li class="{{ Request::is('/home') ? 'active' : ''}} ">
-                <a href="{{ url('/smtp-upload') }}">
-                    <span>
-                        <i class="fa fa-server"></i> Upload SMTP for SPAM(3)
-                    </span>
-                </a>
-            </li>
-            <li class="{{ Request::is('/home') ? 'active' : ''}} ">
                 <a href="/smtpfindupload">
                     <span>
                         <i class="fa fa-envelope-o"></i> Upload Emails for FINDSMTP(2)

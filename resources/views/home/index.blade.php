@@ -1,13 +1,12 @@
 @extends('layouts.dashboard')
 
 @section('content')
-
     <div class='row'>
         <div class='col-md-12'>
             <!-- Box -->
             <div class="box box-primary">
                 <div class="box-header with-border text-center">
-                    <div class="col-md-12"> <b>Spam (3)</b> SMTP Info</div>
+                    <div class="col-md-12"><b>Spam (3)</b> SMTP Info</div>
                     <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                             <i class="fa fa-minus"></i></button>
@@ -39,7 +38,7 @@
 
             <div class="box box-primary">
                 <div class="box-header with-border text-center">
-                    <div class="col-md-12"> <b>Check (8)</b> SMTP Info</div>
+                    <div class="col-md-12"><b>Check (8)</b> SMTP Info</div>
                     <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                             <i class="fa fa-minus"></i></button>
@@ -90,7 +89,7 @@
             </div>
             <div class="box box-primary">
                 <div class="box-header with-border text-center">
-                    <div class="col-md-12"> <b>Find (2)</b> SMTP Info</div>
+                    <div class="col-md-12"><b>Find (2)</b> SMTP Info</div>
                     <div class="box-tools pull-right">
                         <button class="btn btn-box-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
                             <i class="fa fa-minus"></i></button>
@@ -227,5 +226,15 @@
 @endsection
 
 @section('css')
-    <link rel="stylesheet" type="text/css" href="/css/style.css"/>
+    <style>
+        .content {
+            font-size: 16px;
+            line-height: 2em;
+        }
+
+        hr {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
 @stop

@@ -29,8 +29,7 @@ class SettingsController extends Controller
 
     public function emailSettings()
     {
-        $settings = MailSettings::whereId(1)->first()->toArray();
-
+        $settings = MailSettings::whereId(1)->first()->toArray(); 
         return view('settings.emails.index', compact('settings'));
     }
 

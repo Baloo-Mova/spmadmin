@@ -132,11 +132,9 @@ class HomeController extends Controller
 
         $array = [];
         DB::table('smtp')->truncate();
-
         foreach (Storage::files(config('config.smtpFolder')) as $file) {
             foreach (explode("\n", Storage::get($file)) as $line) {
                 $array[] = ['domen' => $line];
-
                 if (count($array) > 100) {
                     SMTP::insert($array);
                     $array = [];
