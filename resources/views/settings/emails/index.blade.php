@@ -96,15 +96,14 @@
                         <a href="{{ route('smtp.upload') }}" class="btn btn-primary"> Загрузить SMTP для спама</a>
                         <span class="btn-label">Файлы будут загружены из папки <b> {{ storage_path()."\\".config('config.smtpFolder') }}</b></span>
                     </p>
-                    <p>
-                        <a href="{{ route('smtp.upload') }}" class="btn btn-primary"> Загрузить SMTP для спама</a>
-                        <span class="btn-label">Файлы будут загружены из папки <b> {{ storage_path()."\\".config('config.smtpFolder') }}</b></span>
-                    </p>
-                    <p>
-                        <a href="{{ route('smtp.upload') }}" class="btn btn-primary"> Загрузить SMTP для спама</a>
-                        <span class="btn-label">Файлы будут загружены из папки <b> {{ storage_path()."\\".config('config.smtpFolder') }}</b></span>
-                    </p>
-
+                    {{--<p>--}}
+                        {{--<a href="{{ route('smtp.upload') }}" class="btn btn-primary"> Загрузить SMTP для спама</a>--}}
+                        {{--<span class="btn-label">Файлы будут загружены из папки <b> {{ storage_path()."\\".config('config.smtpFolder') }}</b></span>--}}
+                    {{--</p>--}}
+                    {{--<p>--}}
+                        {{--<a href="{{ route('smtp.upload') }}" class="btn btn-primary"> Загрузить SMTP для спама</a>--}}
+                        {{--<span class="btn-label">Файлы будут загружены из папки <b> {{ storage_path()."\\".config('config.smtpFolder') }}</b></span>--}}
+                    {{--</p>--}}
                 </div>
             </div>
         </div>

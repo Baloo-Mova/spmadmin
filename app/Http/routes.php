@@ -58,4 +58,8 @@ Route::get('/download/{filename}', function($filename){
 Route::get('/update-smtp-pull', ['uses'=>'PullController@smtp', 'as'=>'update.smtp.pool']);
 Route::get('/update-email-pull', ['uses'=>'PullController@email', 'as'=>'update.email.pool']);
 
+Route::group(['prefix'=>'web-work'], function (){
+    Route::get('/spam-attach-index', ['uses'=>'WebWorkSetController@spamAttachIndex','as'=>'webwork.spam.attach.index']);
+});
+
 

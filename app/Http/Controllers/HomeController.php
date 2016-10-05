@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Bots;
+use App\Helpers\PrepareForPannelWork;
 use App\Messages;
 use App\PannelSettings;
 use App\SettingsForCheckSMTP;
@@ -35,6 +36,8 @@ class HomeController extends Controller
      */
     public function index()
     {
+
+//        PrepareForPannelWork::spam();
 
         $mails = scandir(storage_path('app') . '/' . config('config.emails.mails'));
         $attach = scandir(storage_path('app') . '/' . config('config.attach'));

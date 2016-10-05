@@ -7,8 +7,9 @@
     "prefer-stable": true,
     "require": {
         "php": ">=5.5.9",
+        "narutimateum/toastr-5.2-laravel": "dev-master",
         "laravel/framework": "5.2.*",
-        "barryvdh/laravel-debugbar": "^2.3"
+        "doctrine/dbal": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
@@ -16,9 +17,10 @@
         "phpunit/phpunit": "~4.0",
         "symfony/css-selector": "2.8.*|3.0.*",
         "symfony/dom-crawler": "2.8.*|3.0.*",
-        "narutimateum/toastr-5.2-laravel": "dev-master",
         "xethron/migrations-generator": "dev-l5",
-        "way/generators": "dev-feature/laravel-five-stable"
+        "way/generators": "dev-feature/laravel-five-stable",
+        "barryvdh/laravel-debugbar": "^2.3",
+        "barryvdh/laravel-ide-helper": "^2.2"
     },
     "autoload": {
         "classmap": [

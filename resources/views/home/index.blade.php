@@ -17,21 +17,23 @@
                         <div class="col-md-6">Загруженно SMTP:</div>
                         <div class="col-md-3 text-center">{{ $data['smtpCount'] }} шт.</div>
                         <div class="col-md-3 text-center">
-                            <a class="btn btn-primary" href="{{ url('/delete/smtpclear') }}">Delete</a></div>
+                            <a class="btn btn-danger" href="{{ url('/delete/smtpclear') }}">Delete</a></div>
                     </div>
                     <hr/>
                     <div class="row">
                         <div class="col-md-6">Загруженно файлов с Email: {{ $data['mailsFileCount'] }} шт.</div>
                         <div class="col-md-3 text-center"> Отдано ботам : {{ $data['go_mailsFileCount'] }} </div>
                         <div class="col-md-3 text-center">
-                            <a class="btn btn-primary" href="{{ url('/delete/mailfilesclear') }}">Delete</a></div>
+                            <a class="btn btn-danger" href="{{ url('/delete/mailfilesclear') }}">Delete</a>
+                        </div>
                     </div>
                     <hr/>
                     <div class="row">
                         <div class="col-md-6">Загруженно Attach файлов:</div>
                         <div class="col-md-3 text-center"> {{ $data['attachFileCount'] }} шт.</div>
                         <div class="col-md-3 text-center">
-                            <a class="btn btn-primary" href="{{ url('/delete/attachfilesclear') }}">Delete</a></div>
+                            <a class="btn btn-success" href="{{ route('webwork.spam.attach.index') }}">Index</a>
+                            <a class="btn btn-danger" href="{{ url('/delete/attachfilesclear') }}">Delete</a></div>
                     </div>
                 </div>
             </div>
@@ -144,17 +146,17 @@
     </div><!-- /.row -->
     <div class="text-center">
         <div class="btn-group">
-            <a href="{{ url('/status/STOP') }}" class="btn {{ $status == "STOP"? "btn-success" : "btn-default" }}">{{ $status != "STOP" ? "STOP" : "STOPPED" }}</a>
-            <a href="{{ url('/status/BANALL') }}" class="btn {{ $status == "BANALL"? "btn-success" : "btn-default" }}">{{ $status != "BANALL"? "BAN ALL" : "BAN ALL" }}</a>
-            <a href="{{ url('/status/SMTPCHECK') }}" class="btn {{ $status == "SMTPCHECK"? "btn-success" : "btn-default" }}">{{ $status != "SMTPCHECK"? "START SMTP CHECK" : "SMTP CHECK WORKING" }}</a>
-            <a href="{{ url('/status/SMTPFIND') }}" class="btn {{ $status == "SMTPFIND"? "btn-success" : "btn-default" }}">{{ $status != "SMTPFIND"? "START SMTP FIND" : "SMTP FIND WORKING" }}</a>
-            <a href="{{ url('/status/SPAM') }}" class="btn {{ $status == "SPAM"? "btn-success" : "btn-default" }}">{{ $status != "SPAM"? "START SPAM" : "SPAMMING" }}</a>
+            <a href="{{ url('/status/STOP') }}" class="btn {{ $status == "STOP"? "btn-success disabled" : "btn-default" }}">{{ $status != "STOP" ? "STOP" : "STOPPED" }}</a>
+            <a href="{{ url('/status/BANALL') }}" class="btn {{ $status == "BANALL"? "btn-success disabled" : "btn-default" }}">{{ $status != "BANALL"? "BAN ALL" : "BAN ALL" }}</a>
+            <a href="{{ url('/status/SMTPCHECK') }}" class="btn {{ $status == "SMTPCHECK"? "btn-success disabled" : "btn-default" }}">{{ $status != "SMTPCHECK"? "START SMTP CHECK" : "SMTP CHECK WORKING" }}</a>
+            <a href="{{ url('/status/SMTPFIND') }}" class="btn {{ $status == "SMTPFIND"? "btn-success disabled" : "btn-default" }}">{{ $status != "SMTPFIND"? "START SMTP FIND" : "SMTP FIND WORKING" }}</a>
+            <a href="{{ url('/status/SPAM') }}" class="btn {{ $status == "SPAM"? "btn-success disabled" : "btn-default" }}">{{ $status != "SPAM"? "START SPAM" : "SPAMMING" }}</a>
         </div>
     </div>
     <div class="text-center">
         <div class="btn-group">
-            <a href="{{ url('/blackList/needCheckBlack') }}" class="btn {{ $checkBlackList == "needCheckBlack"? "btn-success" : "btn-default" }}">{{ $checkBlackList != "needCheckBlack"? "Чекать в блек листах" : "Чекает в блек листах" }}</a>
-            <a href="{{ url('/blackList/noNeedCheckBlack') }}" class="btn {{ $checkBlackList == "noNeedCheckBlack"? "btn-success" : "btn-default" }}">{{ $checkBlackList != "noNeedCheckBlack" ? "Не чекать в блек листах" : "Не чекает в блек листах" }}</a>
+            <a href="{{ url('/blackList/needCheckBlack') }}" class="btn {{ $checkBlackList == "needCheckBlack"? "btn-success disabled" : "btn-default" }}">{{ $checkBlackList != "needCheckBlack"? "Чекать в блек листах" : "Чекает в блек листах" }}</a>
+            <a href="{{ url('/blackList/noNeedCheckBlack') }}" class="btn {{ $checkBlackList == "noNeedCheckBlack"? "btn-success disabled" : "btn-default" }}">{{ $checkBlackList != "noNeedCheckBlack" ? "Не чекать в блек листах" : "Не чекает в блек листах" }}</a>
         </div>
     </div>
     <div style="margin-top: 10px;"></div>
